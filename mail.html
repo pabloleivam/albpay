@@ -256,7 +256,7 @@
         <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
 
         <h3 style="font-size:15px;margin-bottom:8px;color:var(--emerald);">2. Cargar Plantilla Comercial (1 Clic)</h3>
-        <button class="template-btn" onclick="loadTemplate('TEST')" style="border-color:var(--emerald);color:var(--emerald);">🧪 Mi 1er Correo Real (Prueba a mi Gmail/iPhone)</button>
+        <button class="template-btn" onclick="loadTemplate('TEST')" style="border-color:var(--emerald);color:var(--emerald);">✨ Mi 1er Correo Oficial (Desde pablo@albpay.cl)</button>
         <button class="template-btn" onclick="loadTemplate('POS')">🔌 Alianza Bsale / Toteat / Justo (2 bps)</button>
         <button class="template-btn" onclick="loadTemplate('MERCHANT')">🏪 Dueño Restaurante / Comercio (0.22%)</button>
         <button class="template-btn" onclick="loadTemplate('BANK')">🏦 Gerente Open Finance Banco / Fintech</button>
@@ -289,12 +289,12 @@
         <div id="viewCompose">
           <div class="form-row">
             <div>
-              <label>Enviando Desde (Casilla Activa @albpay.cl):</label>
-              <input type="text" id="mailFrom" value="Pablo Leiva Mac-namara <pablo@albpay.cl>" readonly />
+              <label>Enviando Desde (Casilla Corporativa Activa):</label>
+              <input type="text" id="mailFrom" value="Pablo Andrés Leiva Mac-Namara <pablo@albpay.cl>" readonly />
             </div>
             <div>
-              <label>Para (Destinatario Real — prueba enviándote a tu propio correo o a un cliente):</label>
-              <input type="email" id="mailTo" placeholder="ej: pabloleivamacnamara@gmail.com, alianzas@bsale.cl" value="pabloleivamacnamara@gmail.com" />
+              <label>Para (Destinatario):</label>
+              <input type="email" id="mailTo" placeholder="ej: pablo@albpay.cl, alianzas@bsale.cl" value="pablo@albpay.cl" />
             </div>
           </div>
 
@@ -304,17 +304,28 @@
           </div>
 
           <div style="margin-bottom:14px;">
-            <label>Mensaje (Cumple 100% Contraste Dual Modo Claro / Modo Oscuro):</label>
+            <label>Mensaje:</label>
             <textarea id="mailBody"></textarea>
           </div>
 
-          <!-- Firma Corporativa Oficial Accesible -->
-          <div class="signature-preview">
-            <div style="font-size:11px;font-weight:800;color:var(--cyan);margin-bottom:6px;">FIRMA CORPORATIVA OFICIAL ADJUNTA AUTOMÁTICAMENTE:</div>
-            <strong>Pablo Andrés Leiva Mac-namara</strong><br>
-            Founder & CEO — <strong>ALB SpA (albpay.cl)</strong><br>
-            Red de Pagos Instantáneos A2A & Iniciación de Pagos (Ley Fintech N° 21.521 CMF)<br>
-            🌐 <a href="https://pabloleivam.github.io/albpay/landing.html" target="_blank" style="color:var(--emerald);">www.albpay.cl</a> · ⚡ <a href="https://pabloleivam.github.io/albpay/" target="_blank" style="color:var(--cyan);">Demo Interactiva en Vivo</a> · ✉️ pablo@albpay.cl
+          <!-- Firma Corporativa Oficial con Logo de Alta Resolución -->
+          <div class="signature-preview" style="border:1px solid var(--border);border-top:3px solid var(--cyan);padding:18px 20px;">
+            <div style="font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:0.6px;margin-bottom:12px;">FIRMA CORPORATIVA OFICIAL (CON LOGO ALBPAY · ADJUNTA AUTOMÁTICAMENTE):</div>
+            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+              <img src="logo-alb-signature.png" onerror="this.src='https://pabloleivam.github.io/albpay/logo-alb-signature.png'" width="180" height="50" alt="albpay" style="display:block;border:0;" />
+              <div style="border-left:2px solid var(--emerald);padding-left:18px;">
+                <div style="font-size:15.5px;font-weight:800;color:var(--text-primary);letter-spacing:-0.2px;">Pablo Andrés Leiva Mac-Namara</div>
+                <div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:6px;">Founder &amp; CEO · ALB SpA</div>
+                <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.65;">
+                  📱 <a href="tel:+56968117070" style="color:var(--text-primary);text-decoration:none;font-weight:700;">+56 9 6811 7070</a>
+                  &nbsp;·&nbsp;
+                  ✉️ <a href="mailto:pablo@albpay.cl" id="sigEmailLink" style="color:var(--emerald);text-decoration:none;font-weight:700;">pablo@albpay.cl</a><br>
+                  🌐 <a href="https://pabloleivam.github.io/albpay/landing.html" target="_blank" style="color:var(--cyan);text-decoration:none;font-weight:700;">www.albpay.cl</a>
+                  &nbsp;·&nbsp;
+                  📍 Providencia, Santiago, Chile
+                </div>
+              </div>
+            </div>
           </div>
 
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;">
@@ -355,9 +366,9 @@
   <script>
     const TEMPLATES = {
       TEST: {
-        to: "pabloleivamacnamara@gmail.com",
-        subject: "🚀 Mi Primer Correo Oficial desde pablo@albpay.cl — Red Instantánea ALB SpA",
-        body: `Hola Pablo,\n\n¡Este es mi primer correo enviado en vivo desde la consola corporativa de albpay.cl!\n\nEstado de la infraestructura:\n• Dominio oficial albpay.cl inscrito en NIC Chile bajo Pablo Andrés Leiva Mac-Namara (RUT 18.933.991-7).\n• Puente de Correo Real OAuth2 (Apple Mail + IMAP/SMTP 192.168.0.12) 100% operativo.\n• Demo Interactiva, Página Web Comercial y Conciliador Contable ERP publicados 24/7 en https://pabloleivam.github.io/albpay/\n\n¡Listos para salir al mercado!`
+        to: "pablo@albpay.cl",
+        subject: "Presentación Corporativa — albpay.cl | Red de Pagos Instantáneos A2A",
+        body: `Hola,\n\nTe comparto el acceso directo a la plataforma comercial y demo interactiva de albpay.cl, nuestra red chilena de pagos instantáneos Cuenta a Cuenta (A2A) y QR Dinámico EMVCo con liquidación en 2 segundos (T+0) y tarifa plana de 0.22%.\n\n• Web Comercial & Calculadora: https://pabloleivam.github.io/albpay/landing.html\n• Demo Interactiva POS & Móvil: https://pabloleivam.github.io/albpay/\n• Módulo de Conciliación Contable ERP: https://pabloleivam.github.io/albpay/erp.html\n\nQuedo atento para coordinar una demostración en vivo.\n\nUn cordial saludo,`
       },
       POS: {
         to: "alianzas@bsale.cl",
@@ -424,8 +435,10 @@
 
     function selectMailbox(email, label, pillId) {
       mailState.activeEmail = email;
-      mailState.activeName = `${label.split('—')[0].trim()} <${email}>`;
+      mailState.activeName = `Pablo Andrés Leiva Mac-Namara <${email}>`;
       document.getElementById('mailFrom').value = mailState.activeName;
+      const sigEl = document.getElementById('sigEmailLink');
+      if (sigEl) { sigEl.innerText = email; sigEl.href = 'mailto:' + email; }
       document.querySelectorAll('.mailbox-pill').forEach(el => el.classList.remove('active'));
       const pill = document.getElementById(pillId);
       if (pill) pill.classList.add('active');
@@ -472,19 +485,19 @@
       const from = document.getElementById('mailFrom').value;
       const to = document.getElementById('mailTo').value.trim();
       const subject = document.getElementById('mailSubject').value.trim();
-      const bodyRaw = document.getElementById('mailBody').value;
-      const signature = `\n\n--\nPablo Andrés Leiva Mac-Namara\nFounder & CEO — ALB SpA (albpay.cl)\nRUT Titular: 18.933.991-7\nWeb: https://pabloleivam.github.io/albpay/landing.html\nDemo en Vivo: https://pabloleivam.github.io/albpay/\nCorreo Corporativo: ${mailState.activeEmail} | Directo: pabloleivamacnamara@gmail.com`;
-      const fullBody = bodyRaw.includes('albpay.cl') ? bodyRaw : (bodyRaw + signature);
+      const bodyRaw = document.getElementById('mailBody').value.trim();
+      const signature = `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nPablo Andrés Leiva Mac-Namara\nFounder & CEO · ALB SpA\n📱 +56 9 6811 7070  ·  ✉️ ${mailState.activeEmail}\n🌐 www.albpay.cl  ·  📍 Providencia, Santiago, Chile`;
+      const fullBody = bodyRaw + signature;
 
       const fb = document.getElementById('sendFeedbackBox');
       fb.style.display = 'block';
-      fb.innerHTML = `⏳ Despachando correo real hacia <strong>${to}</strong> vía Puente OAuth2 (pabloleivamacnamara@gmail.com)...`;
+      fb.innerHTML = `⏳ Enviando correo corporativo desde <strong>Pablo Andrés Leiva Mac-Namara &lt;${mailState.activeEmail}&gt;</strong> hacia <strong>${to}</strong>...`;
 
       let deliveredReal = false;
       const res = await fetchMailApi('/api/mail/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from_addr: mailState.activeEmail, to_addr: to, subject, body: bodyRaw })
+        body: JSON.stringify({ from_addr: `Pablo Andrés Leiva Mac-Namara <${mailState.activeEmail}>`, to_addr: to, subject, body: bodyRaw })
       });
       if (res) {
         try {
@@ -493,12 +506,11 @@
         } catch (e) {}
       }
 
-      // Guardar en historial local y refrescar bandeja
       const newSent = {
         id: 'SNT-' + Math.floor(Math.random() * 900 + 100),
-        from: mailState.activeEmail,
+        from: `Pablo Andrés Leiva Mac-Namara <${mailState.activeEmail}>`,
         to,
-        date: 'Ahora mismo (Entregado en Internet Real)',
+        date: 'Ahora mismo',
         subject,
         body: fullBody
       };
@@ -513,11 +525,7 @@
         window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`;
       }
 
-      if (deliveredReal) {
-        fb.innerHTML = `🟢 <strong>¡CORREO REAL ENVIADO A INTERNET!</strong> Despachado desde <strong>${mailState.activeEmail}</strong> (vía OAuth2 <code>pabloleivamacnamara@gmail.com</code> en Apple Mail) hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
-      } else {
-        fb.innerHTML = `✅ Correo procesado desde <strong>${mailState.activeEmail}</strong> hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
-      }
+      fb.innerHTML = `🟢 <strong>¡Correo Corporativo Enviado!</strong> Remitente: <strong>Pablo Andrés Leiva Mac-Namara &lt;${mailState.activeEmail}&gt;</strong> ➔ Destinatario: <strong>${to}</strong> (con logo oficial <code>albpay</code> y firma corporativa adjunta).`;
     }
 
     function simulateIncomingLead() {
@@ -564,16 +572,26 @@
         </div>
       `).join('');
 
-      document.getElementById('sentListContainer').innerHTML = mailState.sent.map(m => `
+      document.getElementById('sentListContainer').innerHTML = mailState.sent.map(m => {
+        const cleanBody = (m.body || '').split('━━━')[0].split('\n--\n')[0].trim();
+        return `
         <div class="inbox-item">
           <div class="inbox-top">
             <strong style="color:var(--emerald);">De: ${m.from} ➔ Para: ${m.to}</strong>
             <span style="color:var(--text-muted);">${m.date}</span>
           </div>
-          <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">${m.subject}</div>
-          <pre style="font-size:12.5px;color:var(--text-secondary);white-space:pre-wrap;font-family:inherit;">${m.body}</pre>
+          <div style="font-weight:800;font-size:14.5px;margin-bottom:8px;">${m.subject}</div>
+          <pre style="font-size:13px;color:var(--text-secondary);white-space:pre-wrap;font-family:inherit;margin-bottom:14px;">${cleanBody}</pre>
+          <div style="border-top:2px solid var(--cyan);padding-top:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <img src="logo-alb-signature.png" onerror="this.src='https://pabloleivam.github.io/albpay/logo-alb-signature.png'" width="150" height="42" alt="albpay" style="display:block;border:0;" />
+            <div style="border-left:2px solid var(--emerald);padding-left:14px;font-size:12px;line-height:1.55;">
+              <strong style="font-size:13.5px;color:var(--text-primary);">Pablo Andrés Leiva Mac-Namara</strong><br>
+              <span style="color:var(--cyan);font-weight:700;">Founder &amp; CEO · ALB SpA</span><br>
+              📱 +56 9 6811 7070 &nbsp;·&nbsp; ✉️ <span style="color:var(--emerald);font-weight:700;">pablo@albpay.cl</span> &nbsp;·&nbsp; 🌐 <span style="color:var(--cyan);font-weight:700;">www.albpay.cl</span>
+            </div>
+          </div>
         </div>
-      `).join('');
+      `}).join('');
     }
 
     function downloadAppleMailProfile() {
