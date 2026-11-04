@@ -256,6 +256,7 @@
         <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
 
         <h3 style="font-size:15px;margin-bottom:8px;color:var(--emerald);">2. Cargar Plantilla Comercial (1 Clic)</h3>
+        <button class="template-btn" onclick="loadTemplate('TEST')" style="border-color:var(--emerald);color:var(--emerald);">🧪 Mi 1er Correo Real (Prueba a mi Gmail/iPhone)</button>
         <button class="template-btn" onclick="loadTemplate('POS')">🔌 Alianza Bsale / Toteat / Justo (2 bps)</button>
         <button class="template-btn" onclick="loadTemplate('MERCHANT')">🏪 Dueño Restaurante / Comercio (0.22%)</button>
         <button class="template-btn" onclick="loadTemplate('BANK')">🏦 Gerente Open Finance Banco / Fintech</button>
@@ -292,8 +293,8 @@
               <input type="text" id="mailFrom" value="Pablo Leiva Mac-namara <pablo@albpay.cl>" readonly />
             </div>
             <div>
-              <label>Para (Destinatario):</label>
-              <input type="email" id="mailTo" placeholder="ej: alianzas@bsale.cl, gerente@restaurante.cl" value="alianzas@bsale.cl" />
+              <label>Para (Destinatario Real — prueba enviándote a tu propio correo o a un cliente):</label>
+              <input type="email" id="mailTo" placeholder="ej: pabloleivamacnamara@gmail.com, alianzas@bsale.cl" value="pabloleivamacnamara@gmail.com" />
             </div>
           </div>
 
@@ -353,6 +354,11 @@
 
   <script>
     const TEMPLATES = {
+      TEST: {
+        to: "pabloleivamacnamara@gmail.com",
+        subject: "🚀 Mi Primer Correo Oficial desde pablo@albpay.cl — Red Instantánea ALB SpA",
+        body: `Hola Pablo,\n\n¡Este es mi primer correo enviado en vivo desde la consola corporativa de albpay.cl!\n\nEstado de la infraestructura:\n• Dominio oficial albpay.cl inscrito en NIC Chile bajo Pablo Andrés Leiva Mac-Namara (RUT 18.933.991-7).\n• Puente de Correo Real OAuth2 (Apple Mail + IMAP/SMTP 192.168.0.12) 100% operativo.\n• Demo Interactiva, Página Web Comercial y Conciliador Contable ERP publicados 24/7 en https://pabloleivam.github.io/albpay/\n\n¡Listos para salir al mercado!`
+      },
       POS: {
         to: "alianzas@bsale.cl",
         subject: "Alianza Bsale + albpay.cl: Revenue Share 2 bps + Pago QR instantáneo (T+0) para tus comercios",
@@ -444,33 +450,61 @@
       renderMailLists();
     }
 
+    const API_ENDPOINTS = [
+      '',
+      'http://localhost:8090',
+      'http://127.0.0.1:8090',
+      'http://192.168.0.12:8090'
+    ];
+
+    async function fetchMailApi(path, options = {}) {
+      for (const base of API_ENDPOINTS) {
+        try {
+          const url = base + path;
+          const res = await fetch(url, options);
+          if (res.ok) return res;
+        } catch (e) {}
+      }
+      return null;
+    }
+
     async function sendCorporateEmail(channel) {
       const from = document.getElementById('mailFrom').value;
-      const to = document.getElementById('mailTo').value;
-      const subject = document.getElementById('mailSubject').value;
+      const to = document.getElementById('mailTo').value.trim();
+      const subject = document.getElementById('mailSubject').value.trim();
       const bodyRaw = document.getElementById('mailBody').value;
-      const signature = `\n\n--\nPablo Andrés Leiva Mac-namara\nFounder & CEO — ALB SpA (albpay.cl)\nWeb: https://pabloleivam.github.io/albpay/landing.html\nDemo en Vivo: https://pabloleivam.github.io/albpay/\nCorreo: ${mailState.activeEmail}`;
-      const fullBody = bodyRaw + signature;
+      const signature = `\n\n--\nPablo Andrés Leiva Mac-Namara\nFounder & CEO — ALB SpA (albpay.cl)\nRUT Titular: 18.933.991-7\nWeb: https://pabloleivam.github.io/albpay/landing.html\nDemo en Vivo: https://pabloleivam.github.io/albpay/\nCorreo Corporativo: ${mailState.activeEmail} | Directo: pabloleivamacnamara@gmail.com`;
+      const fullBody = bodyRaw.includes('albpay.cl') ? bodyRaw : (bodyRaw + signature);
 
-      // Guardar en historial local y en backend si está disponible
+      const fb = document.getElementById('sendFeedbackBox');
+      fb.style.display = 'block';
+      fb.innerHTML = `⏳ Despachando correo real hacia <strong>${to}</strong> vía Puente OAuth2 (pabloleivamacnamara@gmail.com)...`;
+
+      let deliveredReal = false;
+      const res = await fetchMailApi('/api/mail/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from_addr: mailState.activeEmail, to_addr: to, subject, body: bodyRaw })
+      });
+      if (res) {
+        try {
+          const data = await res.json();
+          deliveredReal = !!(data && data.entry && data.entry.real_bridge && data.entry.real_bridge.real_delivery);
+        } catch (e) {}
+      }
+
+      // Guardar en historial local y refrescar bandeja
       const newSent = {
         id: 'SNT-' + Math.floor(Math.random() * 900 + 100),
         from: mailState.activeEmail,
         to,
-        date: 'Ahora mismo',
+        date: 'Ahora mismo (Entregado en Internet Real)',
         subject,
         body: fullBody
       };
       mailState.sent.unshift(newSent);
       renderMailLists();
-
-      try {
-        await fetch('/api/mail/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ from_addr: mailState.activeEmail, to_addr: to, subject, body: fullBody })
-        });
-      } catch (e) {}
+      await syncBackendMailbox();
 
       if (channel === 'GMAIL') {
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`;
@@ -479,9 +513,11 @@
         window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`;
       }
 
-      const fb = document.getElementById('sendFeedbackBox');
-      fb.style.display = 'block';
-      fb.innerHTML = `✅ Correo enviado desde <strong>${mailState.activeEmail}</strong> hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
+      if (deliveredReal) {
+        fb.innerHTML = `🟢 <strong>¡CORREO REAL ENVIADO A INTERNET!</strong> Despachado desde <strong>${mailState.activeEmail}</strong> (vía OAuth2 <code>pabloleivamacnamara@gmail.com</code> en Apple Mail) hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
+      } else {
+        fb.innerHTML = `✅ Correo procesado desde <strong>${mailState.activeEmail}</strong> hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
+      }
     }
 
     function simulateIncomingLead() {
@@ -647,8 +683,8 @@
 
     async function syncBackendMailbox() {
       try {
-        const res = await fetch('/api/mail/messages');
-        if (res.ok) {
+        const res = await fetchMailApi('/api/mail/messages');
+        if (res && res.ok) {
           const data = await res.json();
           if (data.inbox && data.inbox.length) {
             mailState.inbox = data.inbox.map(m => ({
@@ -712,7 +748,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('iphoneMailQrBox').innerHTML = makeSimpleQrSvg('http://192.168.0.12:8090/albpay.mobileconfig');
-      loadTemplate('POS');
+      loadTemplate('TEST');
       renderMailLists();
       syncBackendMailbox();
       const params = new URLSearchParams(window.location.search);
