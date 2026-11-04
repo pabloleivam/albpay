@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ALB Chile" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>ALB Móvil — Billetera Open Finance & Escáner QR</title>
+  <style>
+    :root {
+      --bg-app: #0B0F19;
+      --bg-card: #162035;
+      --bg-elevated: #1E2C4A;
+      --text-main: #FFFFFF;
+      --text-sub: #CBD5E1;
+      --text-muted: #94A3B8;
+      --cyan: #00CCF6;
+      --emerald: #10B981;
+      --gold: #FFC000;
+      --coral: #FF8282;
+      --border: #2D3F66;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      background-color: #05080F;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .phone-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background-color: var(--bg-app);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 16px 32px;
+      gap: 16px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alb-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00CCF6 0%, #10B981 100%);
+      color: #0B0F19;
+      font-weight: 900;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.5px;
+    }
+
+    .status-dot {
+      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .account-card {
+      background: linear-gradient(145deg, #16223A 0%, #0F172A 100%);
+      border: 1px solid var(--cyan);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    }
+
+    .account-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 700;
+    }
+
+    .account-balance {
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 6px 0 4px;
+      color: var(--text-main);
+    }
+
+    .account-meta {
+      font-size: 0.82rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .action-btn {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 14px;
+      padding: 14px 12px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .action-btn.active {
+      border-color: var(--cyan);
+      background-color: var(--bg-elevated);
+    }
+
+    .card-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-section h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background-color: #0B0F19;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .pay-cta {
+      width: 100%;
+      padding: 15px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      font-size: 1.02rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+    }
+
+    .pay-cta:active {
+      transform: scale(0.98);
+    }
+
+    .receipt-box {
+      border-radius: 14px;
+      padding: 14px;
+      background-color: var(--bg-elevated);
+      border-left: 4px solid var(--emerald);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .receipt-box.warn { border-left-color: var(--gold); }
+    .receipt-box.danger { border-left-color: var(--coral); }
+  </style>
+</head>
+<body>
+  <div class="phone-shell">
+    <div class="top-bar">
+      <div class="brand-pill">
+        <div class="alb-mark">alb</div>
+        <div>
+          <div style="font-weight: 900; font-size: 1.05rem;">alb móvil</div>
+          <div style="font-size: 0.74rem; color: var(--text-sub);">Open Finance Chile · FAPI 2.0</div>
+        </div>
+      </div>
+      <span class="status-dot" id="connBadge">🟢 Conectado</span>
+    </div>
+
+    <!-- Tarjeta de Cuenta Bancaria Vinculada -->
+    <div class="account-card">
+      <div class="account-label">Cuenta Vinculada en DICT-CL</div>
+      <div class="account-balance" id="mobBalance">$4.850.000</div>
+      <div class="account-meta" id="mobHolder">Valentina Rojas Muñoz · Banco Santander</div>
+      <div style="margin-top: 10px;">
+        <label for="mobPayerSelect">Cambiar Cuenta Bancaria Origen:</label>
+        <select id="mobPayerSelect" onchange="updatePayerCard()"></select>
+      </div>
+    </div>
+
+    <!-- Acciones Rápidas tipo Pix -->
+    <div class="quick-actions">
+      <button class="action-btn active" onclick="pullPosQrFromServer()">
+        <span style="font-size: 1.4rem;">📷</span>
+        <span>Escanear QR POS Activo</span>
+      </button>
+      <button class="action-btn" onclick="setP2pPreset()">
+        <span style="font-size: 1.4rem;">⚡</span>
+        <span>Transferir a Celular / RUT</span>
+      </button>
+    </div>
+
+    <!-- Formulario de Pago Instantáneo -->
+    <div class="card-section">
+      <h3 id="modeTitle">📲 Iniciar Pago Instantáneo A2A</h3>
+
+      <div>
+        <label for="mobPayeeKey">Llave Destinatario (`RUT`, `+569` o Comercio QR)</label>
+        <input type="text" id="mobPayeeKey" value="76.543.210-3" oninput="resolveMobileKey()" />
+      </div>
+
+      <div id="mobDictBox" style="font-size: 0.8rem; color: var(--cyan); background: #0B0F19; padding: 10px; border-radius: 10px; border: 1px solid var(--border);">
+        🏪 <strong>Café Especialidad Lastarria SpA</strong> · Banco de Chile (Verificado DICT-CL)
+      </div>
+
+      <div>
+        <label for="mobAmount">Monto en Pesos Chilenos (CLP $)</label>
+        <input type="number" id="mobAmount" value="18500" min="100" />
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
+        <label style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="mobDuress" style="width: 18px; height: 18px;" />
+          <span>🚨 Activar <strong>PIN de Coacción Silencioso</strong> (Retención MED 72h)</span>
+        </label>
+        <label for="mobHour">Simular Horario (Escudo Nocturno 22:00-06:00):</label>
+        <select id="mobHour">
+          <option value="14">☀️ 14:00 hrs (Horario Diurno)</option>
+          <option value="2">🌙 02:00 AM (Madrugada — Tope $200.000 CLP)</option>
+        </select>
+      </div>
+
+      <button class="pay-cta" onclick="sendMobilePayment()">
+        🔐 Autorizar con Face ID / Biometría
+      </button>
+    </div>
+
+    <!-- Comprobante en Vivo -->
+    <div class="receipt-box" id="mobReceiptBox">
+      💡 <strong>Listo para tu Demo:</strong> Si tienes abierta la consola POS en tu Mac, al presionar <strong>Autorizar con Face ID</strong> verás cómo la pantalla del computador se marca como <strong>PAGADA</strong> en tiempo real.
+    </div>
+  </div>
+
+  <script>
+    let mobState = {
+      keys: [
+        { key_value: "+56991234567", holder_rut: "15.432.876-9", holder_name: "Valentina Rojas Muñoz", bank_name: "Banco Santander Chile", is_merchant: 0, balance_clp: 4850000 },
+        { key_value: "+56987654321", holder_rut: "18.234.567-9", holder_name: "Matías Soto Contreras", bank_name: "Banco BCI", is_merchant: 0, balance_clp: 3100000 },
+        { key_value: "76.543.210-3", holder_rut: "76.543.210-3", holder_name: "Café Especialidad Lastarria SpA", bank_name: "Banco de Chile", is_merchant: 1, balance_clp: 14200000 },
+        { key_value: "+56977001122", holder_rut: "77.123.450-K", holder_name: "Feria Libre Don Pedro EIRL", bank_name: "BancoEstado", is_merchant: 1, balance_clp: 3450000 },
+        { key_value: "+56966600999", holder_rut: "21.999.888-0", holder_name: "Cuenta Reciente Sospechosa (Test Mula)", bank_name: "Tenpo Prepago", is_merchant: 0, balance_clp: 50000 }
+      ],
+      activeTxid: null,
+      activeEmvco: null
+    };
+
+    function fmtCLP(n) {
+      return "$" + Math.round(Number(n) || 0).toLocaleString("es-CL");
+    }
+
+    async function syncFromBackend() {
+      try {
+        const res = await fetch("/api/state");
+        if (!res.ok) return;
+        const data = await res.json();
+        mobState.keys = data.dict_keys || mobState.keys;
+        document.getElementById("connBadge").textContent = "🟢 Sincronizado con POS Mac";
+        renderPayerOptions();
+        if (data.qr_charges && data.qr_charges.length > 0) {
+          const latestPending = data.qr_charges.find(q => q.status === "PENDING");
+          if (latestPending) {
+            mobState.activeTxid = latestPending.txid;
+            mobState.activeEmvco = latestPending.emvco_payload;
+          }
+        }
+      } catch (e) {
+        document.getElementById("connBadge").textContent = "📱 Modo Autónomo Activo";
+        renderPayerOptions();
+      }
+    }
+
+    function renderPayerOptions() {
+      const sel = document.getElementById("mobPayerSelect");
+      const current = sel.value || "+56991234567";
+      sel.innerHTML = "";
+      mobState.keys.filter(k => !k.is_merchant).forEach(k => {
+        const opt = document.createElement("option");
+        opt.value = k.key_value;
+        opt.textContent = `${k.holder_name} (${k.bank_name}) — ${fmtCLP(k.balance_clp)}`;
+        sel.appendChild(opt);
+      });
+      sel.value = current;
+      updatePayerCard();
+    }
+
+    function updatePayerCard() {
+      const val = document.getElementById("mobPayerSelect").value;
+      const p = mobState.keys.find(k => k.key_value === val) || mobState.keys[0];
+      if (!p) return;
+      document.getElementById("mobBalance").textContent = fmtCLP(p.balance_clp);
+      document.getElementById("mobHolder").textContent = `${p.holder_name} · ${p.bank_name}`;
+    }
+
+    function resolveMobileKey() {
+      const q = document.getElementById("mobPayeeKey").value.trim().toLowerCase();
+      const found = mobState.keys.find(k => k.key_value.toLowerCase() === q);
+      const box = document.getElementById("mobDictBox");
+      if (!found) {
+        box.innerHTML = `🔴 Llave no encontrada en DICT-CL.`;
+        return;
+      }
+      box.innerHTML = `✅ <strong>${found.holder_name}</strong><br/>RUT: <code>${found.holder_rut}</code> · ${found.bank_name}`;
+    }
+
+    async function pullPosQrFromServer() {
+      await syncFromBackend();
+      try {
+        const res = await fetch("/api/state");
+        if (res.ok) {
+          const data = await res.json();
+          const pending = (data.qr_charges || []).find(q => q.status === "PENDING") || (data.qr_charges || [])[0];
+          if (pending) {
+            document.getElementById("mobPayeeKey").value = pending.key_value;
+            document.getElementById("mobAmount").value = pending.amount_clp;
+            mobState.activeTxid = pending.txid;
+            mobState.activeEmvco = pending.emvco_payload;
+            resolveMobileKey();
+            document.getElementById("mobReceiptBox").innerHTML =
+              `📷 <strong>QR Dinámico Escaneado (${pending.txid}):</strong> Cobro de <strong>${fmtCLP(pending.amount_clp)}</strong> en ${pending.merchant_name}. Presiona <strong>Autorizar con Face ID</strong>.`;
+            return;
+          }
+        }
+      } catch (_) {}
+      document.getElementById("mobPayeeKey").value = "76.543.210-3";
+      document.getElementById("mobAmount").value = "18500";
+      resolveMobileKey();
+    }
+
+    function setP2pPreset() {
+      mobState.activeTxid = null;
+      mobState.activeEmvco = null;
+      document.getElementById("mobPayeeKey").value = "+56987654321";
+      document.getElementById("mobAmount").value = "25000";
+      resolveMobileKey();
+    }
+
+    async function sendMobilePayment() {
+      const payerKey = document.getElementById("mobPayerSelect").value;
+      const payeeKey = document.getElementById("mobPayeeKey").value.trim();
+      const amount = parseInt(document.getElementById("mobAmount").value || "18500", 10);
+      const duress = document.getElementById("mobDuress").checked;
+      const hour = parseInt(document.getElementById("mobHour").value || "14", 10);
+      const receipt = document.getElementById("mobReceiptBox");
+
+      try {
+        const res = await fetch("/api/pay", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            payer_key: payerKey,
+            payee_key: payeeKey,
+            amount_clp: amount,
+            txid: mobState.activeTxid,
+            emvco_payload: mobState.activeEmvco,
+            simulated_hour: hour,
+            duress_mode: duress
+          })
+        });
+        if (res.ok) {
+          const tx = await res.json();
+          await syncFromBackend();
+          if (tx.status === "SETTLED") {
+            receipt.className = "receipt-box";
+            receipt.innerHTML = `🟢 <strong>PAGO APROBADO EN ${tx.latency_ms} ms</strong><br/>Monto: <strong>${fmtCLP(tx.amount_clp)}</strong> ➔ ${tx.payee_name}<br/>E2E ISO 20022: <code>${tx.e2e_id}</code>`;
+          } else if (tx.status === "QUARANTINE_MED") {
+            receipt.className = "receipt-box warn";
+            receipt.innerHTML = `🟡 <strong>BLOQUEO CAUTELAR 72H (MED-CL)</strong><br/>Fondos retenidos preventivamente por seguridad (Score ${tx.fraud_score}/100).`;
+          } else {
+            receipt.className = "receipt-box danger";
+            receipt.innerHTML = `🛑 <strong>OPERACIÓN RECHAZADA POR ESCUDO ALB</strong><br/>${(tx.fraud_reasons || [])[0] || "Riesgo detectado"}`;
+          }
+          return;
+        }
+      } catch (_) {}
+
+      // Fallback autónomo si se abre sin backend
+      const payer = mobState.keys.find(k => k.key_value === payerKey);
+      const payee = mobState.keys.find(k => k.key_value.toLowerCase() === payeeKey.toLowerCase());
+      if (payer && payee) {
+        payer.balance_clp -= amount;
+        updatePayerCard();
+        receipt.className = "receipt-box";
+        receipt.innerHTML = `🟢 <strong>PAGO APROBADO EN 42 ms</strong><br/>Transferidos <strong>${fmtCLP(amount)}</strong> a <strong>${payee.holder_name}</strong> (${payee.bank_name}).`;
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      syncFromBackend();
+    });
+  </script>
+</body>
+</html>

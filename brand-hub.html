@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>alb — Centro Oficial de Marca, Estrategia de Ventas B2B & Kit Redes Sociales</title>
+  <style>
+    :root {
+      --bg-dark: #070B14;
+      --bg-card: #0F172A;
+      --bg-card-alt: #131F36;
+      --cyan: #00D4FF;
+      --emerald: #00C48C;
+      --gold: #FFC000;
+      --coral: #FF6B6B;
+      --text-main: #FFFFFF;
+      --text-muted: #C8CDD7;
+      --border: #1E293B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(90deg, #070B14 0%, #0F172A 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-wordmark {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .brand-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(0, 212, 255, 0.12);
+      border: 1px solid var(--cyan);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      transition: all 0.18s ease;
+    }
+    .btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .btn-primary {
+      background: var(--emerald);
+      color: #070B14;
+      border-color: var(--emerald);
+    }
+    .btn-primary:hover {
+      background: #00e0a0;
+      color: #070B14;
+    }
+    .container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+    .hero {
+      background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.15), transparent 55%),
+                  radial-gradient(circle at bottom left, rgba(0, 196, 140, 0.12), transparent 55%),
+                  var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 36px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: 34px;
+      line-height: 1.18;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 36px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cyan);
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card h3 {
+      font-size: 17px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .badge-emerald { background: rgba(0, 196, 140, 0.16); color: var(--emerald); border: 1px solid var(--emerald); }
+    .badge-cyan { background: rgba(0, 212, 255, 0.16); color: var(--cyan); border: 1px solid var(--cyan); }
+    .badge-gold { background: rgba(255, 192, 0, 0.16); color: var(--gold); border: 1px solid var(--gold); }
+    .asset-preview {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #050811;
+      max-height: 420px;
+      object-fit: contain;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      background: var(--bg-card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: #1B365D;
+      color: #FFFFFF;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 700;
+    }
+    td {
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--text-main);
+      vertical-align: top;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    pre.draft-box {
+      background: #070B14;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--text-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .swatch-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .swatch {
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--emerald);
+      color: #070B14;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand-logo">
+      <svg width="40" height="40" viewBox="0 0 100 100" aria-label="alb logo">
+        <polygon points="50,8 84,42 50,76 16,42" fill="#00D4FF"/>
+        <polygon points="50,24 84,58 50,92 16,58" fill="#00C48C"/>
+        <polygon points="50,32 68,50 50,68 32,50" fill="#FFFFFF"/>
+      </svg>
+      <div>
+        <span class="brand-wordmark">alb</span>
+        <span class="brand-tag">BRAND BOOK · VENTAS B2B · SOCIAL MEDIA KIT</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="btn">← Volver al Terminal POS & Consola</a>
+      <a href="mobile.html" class="btn btn-primary">Abrir App Móvil PWA</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <div>
+        <h1>Manual de Identidad Visual Inconfundible, Estrategia Comercial Chile y Kit de Redes Sociales</h1>
+        <p>
+          Inspirado en el <em>Manual de Uso da Marca Pix</em> del Banco Central de Brasil: diseñado para que cualquier persona en Chile reconozca el sello <strong>alb</strong> en menos de 1 segundo en vitrinas, cajas registradoras, sitios web y redes sociales.
+        </p>
+        <div class="pill-row">
+          <span class="pill" style="color:var(--cyan)">◆ Verbo Oficial: "Hazme un alb"</span>
+          <span class="pill" style="color:var(--emerald)">◆ Wordmark siempre en minúscula: alb</span>
+          <span class="pill" style="color:var(--gold)">◆ 0.22% Comisión Comercio · T+0 (2 seg)</span>
+          <span class="pill">◆ Handles: @alb.cl · @pagaconalb</span>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <img src="brand-assets/03_Avatar_Oficial_RRSS_ALB.png" alt="Avatar Oficial ALB" style="width:190px;height:190px;border-radius:28px;border:2px solid var(--cyan);" />
+      </div>
+    </section>
+
+    <!-- 1. PALETA CROMÁTICA Y REGLAS DE MARCA -->
+    <h2 class="section-title">1. Sistema de Identidad Visual (Contraste Dual Garantizado)</h2>
+    <p class="section-sub">Colores calibrados matemáticamente para máxima legibilidad en pantallas OLED, terminales POS y vitrinas físicas tanto de día como de noche.</p>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#00D4FF;color:#070B14;">
+        Cian Eléctrico ALB<br><span style="font-size:12px;">#00D4FF · Diamante Superior</span>
+      </div>
+      <div class="swatch" style="background:#00C48C;color:#070B14;">
+        Esmeralda Liquidación<br><span style="font-size:12px;">#00C48C · Diamante Inferior (T+0)</span>
+      </div>
+      <div class="swatch" style="background:#070B14;color:#FFFFFF;border-color:#00D4FF;">
+        Azul Noche Profundo<br><span style="font-size:12px;">#070B14 · Fondo Oficial POS</span>
+      </div>
+      <div class="swatch" style="background:#FFC000;color:#070B14;">
+        Oro Escudo Antifraude<br><span style="font-size:12px;">#FFC000 · Sello 7 Capas & MED</span>
+      </div>
+    </div>
+
+    <!-- 2. KIT DE SEÑALÉTICA POS Y REDES SOCIALES -->
+    <h2 class="section-title">2. Kit Oficial de Punto de Venta (POS) y Redes Sociales Listo para Imprimir/Publicar</h2>
+    <p class="section-sub">Haz clic derecho o usa el botón de descarga en cada pieza de alta resolución (PNG sin artefactos ni glifos faltantes).</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Sticker Vitrina y Puerta <span class="badge badge-emerald">POS Físico 12x14.5 cm</span></h3>
+        <img class="asset-preview" src="brand-assets/01_Sticker_Vitrina_Aceptamos_ALB.png" alt="Sticker Aquí Aceptamos ALB" />
+        <a class="btn btn-primary" href="brand-assets/01_Sticker_Vitrina_Aceptamos_ALB.png" download>Descargar Sticker PNG Alta Resolución</a>
+      </div>
+
+      <div class="card">
+        <h3>Display Acrílico QR de Caja/Mesa <span class="badge badge-cyan">Mostrador 10x16 cm</span></h3>
+        <img class="asset-preview" src="brand-assets/02_Display_Mesa_QR_POS_ALB.png" alt="Display Acrílico QR ALB" />
+        <a class="btn btn-primary" href="brand-assets/02_Display_Mesa_QR_POS_ALB.png" download>Descargar Plantilla Acrílico QR</a>
+      </div>
+
+      <div class="card">
+        <h3>Post Instagram / TikTok P2P <span class="badge badge-cyan">@alb.cl · 1080x1080</span></h3>
+        <img class="asset-preview" src="brand-assets/05_Post_Lanzamiento_P2P_Instagram.png" alt="Post P2P Instagram ALB" />
+        <a class="btn btn-primary" href="brand-assets/05_Post_Lanzamiento_P2P_Instagram.png" download>Descargar Post Lanzamiento P2P</a>
+      </div>
+
+      <div class="card">
+        <h3>Post Instagram / LinkedIn Comercios <span class="badge badge-emerald">B2B · 1080x1080</span></h3>
+        <img class="asset-preview" src="brand-assets/06_Post_Comercios_B2B_Instagram.png" alt="Post Comercios B2B ALB" />
+        <a class="btn btn-primary" href="brand-assets/06_Post_Comercios_B2B_Instagram.png" download>Descargar Post Ahorro Comercios</a>
+      </div>
+
+      <div class="card" style="grid-column: span 2;">
+        <h3>Banner Corporativo LinkedIn & X <span class="badge badge-gold">1584x396 px · Oficial</span></h3>
+        <img class="asset-preview" src="brand-assets/04_Banner_LinkedIn_Corporativo_ALB.png" alt="Banner LinkedIn ALB" />
+        <a class="btn btn-primary" href="brand-assets/04_Banner_LinkedIn_Corporativo_ALB.png" download>Descargar Banner Corporativo LinkedIn</a>
+      </div>
+    </div>
+
+    <!-- 3. TARGET LIST NOMINAL EN CHILE -->
+    <h2 class="section-title">3. Estrategia de Ventas B2B: ¿A Quiénes Buscamos Primero en Chile?</h2>
+    <p class="section-sub">En lugar de ir comercio por comercio, conectamos los multiplicadores tecnológicos que ya procesan las ventas de más de 115.000 comercios en Chile, ofreciéndoles 2 bps (0.02%) de Revenue Share automático.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Prioridad & Tier</th>
+          <th>Empresa Objetivo en Chile</th>
+          <th>Alcance / Red</th>
+          <th>Cargo Decisor a Contactar</th>
+          <th>Propuesta de Valor Irresistible (Gancho Comercial)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-emerald">TIER 1 · POS</span></td>
+          <td><strong>Bsale (Imaginex)</strong></td>
+          <td>+60.000 comercios retail y pymes</td>
+          <td>CEO / Head of Partnerships / VP Product</td>
+          <td>Revenue Share de <strong>2 bps (0.02%)</strong> de por vida + Boleta electrónica SII conciliada en 1 segundo sin pantallazos falsos.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-emerald">TIER 1 · POS</span></td>
+          <td><strong>Toteat</strong></td>
+          <td>+4.500 restaurantes y bares</td>
+          <td>CEO / Co-Fundador / CTO</td>
+          <td>QR Dinámico EMVCo impreso en la pre-cuenta: el comensal escanea en la mesa, agrega propina, paga en 2 seg y la mesa se cierra sola.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-emerald">TIER 1 · E-Com</span></td>
+          <td><strong>Justo (getjusto.com)</strong></td>
+          <td>+3.000 restaurantes con delivery propio</td>
+          <td>CEO / VP Growth / Head of Payments</td>
+          <td>Bajar el costo de pasarela de los restaurantes desde ~2.2% a <strong>0.22%</strong> con liquidación instantánea T+0 fin de semana incluido.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-emerald">TIER 1 · PropTech</span></td>
+          <td><strong>ComunidadFeliz / Edipro</strong></td>
+          <td>+4.500 edificios y condominios</td>
+          <td>CEO / Gerente Comercial / Head of Fintech</td>
+          <td>Pago de gastos comunes vía QR Dinámico y <strong>ALB Automático</strong> recurrente: $0 rebote y conciliación automática por departamento.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-emerald">TIER 1 · ERP</span></td>
+          <td><strong>Defontana / Nubox / Buk</strong></td>
+          <td>+45.000 empresas en Chile</td>
+          <td>Gerente General / VP Alianzas</td>
+          <td>Insertar botón "Pagar Factura con alb" en cada DTE emitido: cobro B2B instantáneo sin esperar 30/60 días ni conciliar cartolas a mano.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-cyan">TIER 2 · Bancos</span></td>
+          <td><strong>BCI / MACH · Tenpo · BancoEstado</strong></td>
+          <td>+20M cuentas combinadas</td>
+          <td>Gerente Open Finance / Medios de Pago</td>
+          <td>Participación fundadora en el directorio <strong>DICT-CL</strong> (NCG N° 514 CMF) y escudo colaborativo antifraude <strong>MED-CL 72h</strong>.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-gold">TIER 3 · Polos</span></td>
+          <td><strong>Barrio Italia · MUT · Lastarria · ACHIGA</strong></td>
+          <td>Polos gastronómicos de alta densidad</td>
+          <td>Dueños de locales / Directorio ACHIGA</td>
+          <td><strong>1er Mes 0% Comisión</strong> + Kit Acrílico QR gratuito para lograr que el cliente vea el sello <em>"Aquí aceptamos alb"</em> 5 veces por cuadra.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 4. DRAFTS LISTOS PARA COPIAR -->
+    <h2 class="section-title">4. Drafts de Ventas Listos para Copiar y Enviar (1 Clic)</h2>
+    <p class="section-sub">Plantillas redactadas con enfoque consultivo y cifras reales del mercado chileno.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Draft A: CEOs / Partnerships de POS y ERPs <span class="badge badge-emerald">Bsale · Toteat · Justo</span></h3>
+        <pre class="draft-box" id="draft-pos">Asunto: Alianza [Nombre POS/ERP] + alb: Revenue Share 2 bps + Pago QR instantáneo (T+0) para tus comercios
+
+Hola [Nombre],
+
+Te escribo porque en ALB (alb) hemos construido la primera infraestructura chilena de pagos instantáneos A2A e Iniciación de Pagos (PISP bajo NCG N° 514 CMF), replicando la velocidad y experiencia de Pix en Brasil adaptada 100% a Chile.
+
+Hoy miles de comercios en [Nombre POS] sufren por dos motivos: pagan entre 1.4% y 2.95% en tarjetas esperando 48 horas su dinero, o aceptan transferencias manuales arriesgándose al fraude del "pantallazo falso".
+
+Queremos habilitar "Paga con alb" de forma nativa en [Nombre POS]:
+1. El cajero genera un QR Dinámico EMVCo firmado criptográficamente en 1 clic.
+2. El cliente escanea con su banco, el dinero llega en 1.8 segundos (T+0, 24/7) y la boleta se marca pagada automáticamente en [Nombre POS] vía Webhook.
+3. El comercio paga solo 0.22% (ahorra 85% vs tarjetas) y [Nombre POS] recibe un Revenue Share directo de 2 bps (0.02%) sobre todo el volumen transado por su red.
+
+Ya tenemos el SDK JS/REST y el entorno demo corriendo en tiempo real. ¿Tienes 15 minutos este jueves a las 11:00 o viernes a las 10:00 para mostrarte la demo en vivo desde el teléfono?
+
+Un abrazo,
+Pablo Leiva Mac-namara — Founder & CEO, ALB SpA (alb)</pre>
+        <button class="btn btn-primary" onclick="copyText('draft-pos')">Copiar Draft POS / ERP al Portapapeles</button>
+      </div>
+
+      <div class="card">
+        <h3>Draft B: Dueños / CFOs de Comercios y Cadenas <span class="badge badge-cyan">Restaurantes · Retail · Clínicas</span></h3>
+        <pre class="draft-box" id="draft-merchant">Asunto: Cómo ahorrar +$12M al año en comisiones de tarjetas en [Nombre Comercio] (y recibir tu plata en 2 segundos)
+
+Hola [Nombre],
+
+Hice el cálculo rápido para [Nombre Comercio]: un negocio en Chile que factura $65.000.000 al mes en tarjetas termina entregando cerca de $14.400.000 al año en comisiones, además de esperar hasta 48 horas hábiles los lunes para recibir la caja del fin de semana.
+
+Con ALB (alb), la nueva red chilena de pagos instantáneos por QR Dinámico:
+• Tu comisión baja a una tarifa plana de 0.22% (ahorras un 85% inmediato, más de $12.2M al año por local).
+• La plata entra en tu cuenta bancaria en 2 segundos reales (T+0), incluyendo sábados, domingos y festivos.
+• Cero pantallazos falsos: el QR viene blindado con firma criptográfica y avisa al cajero en pantalla apenas el banco confirma los fondos.
+
+Estamos activando a nuestros primeros 100 comercios fundadores con 0% de comisión durante todo el primer mes y entrega gratuita del Kit Oficial de Caja (Soporte Acrílico QR + Sello "Aquí aceptamos alb").
+
+¿Agendamos 10 minutos esta semana y te hago una transferencia de prueba en vivo a tu cuenta?
+
+Saludos cordiales,
+Pablo Leiva Mac-namara — ALB (alb)</pre>
+        <button class="btn btn-primary" onclick="copyText('draft-merchant')">Copiar Draft Comercios al Portapapeles</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">¡Texto copiado al portapapeles!</div>
+
+  <script>
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 2400);
+      });
+    }
+  </script>
+</body>
+</html>

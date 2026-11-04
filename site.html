@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>alb — Red de Pagos Instantáneos A2A & Open Finance de Chile</title>
+  <meta name="description" content="Transfiere gratis en 1 segundo solo con el +569 o RUT. Cobra en tu comercio con QR Dinámico EMVCo al 0.22% y recibe tu dinero en 2 segundos (T+0, 24/7)." />
+  <style>
+    :root {
+      --bg-dark: #070B14;
+      --bg-card: #0F172A;
+      --bg-card-alt: #131F36;
+      --cyan: #00D4FF;
+      --emerald: #00C48C;
+      --gold: #FFC000;
+      --coral: #FF6B6B;
+      --text-main: #FFFFFF;
+      --text-muted: #C8CDD7;
+      --border: #1E293B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 11, 20, 0.92);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .wordmark {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn-emerald {
+      background: var(--emerald);
+      color: #070B14;
+      border-color: var(--emerald);
+    }
+    .btn-emerald:hover { background: #00e2a3; color: #070B14; }
+    .btn-cyan {
+      background: var(--cyan);
+      color: #070B14;
+      border-color: var(--cyan);
+    }
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--cyan);
+      background: rgba(0, 212, 255, 0.12);
+      border: 1px solid var(--cyan);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 46px;
+      line-height: 1.12;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+    .hero h1 span { color: var(--emerald); }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .calc-card {
+      background: linear-gradient(165deg, #0F172A 0%, #131F36 100%);
+      border: 2px solid var(--emerald);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 196, 140, 0.12);
+    }
+    .calc-card h3 {
+      font-size: 19px;
+      margin-bottom: 6px;
+      color: var(--emerald);
+    }
+    .calc-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--cyan);
+      background: #070B14;
+      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 800;
+      margin: 10px 0 18px;
+    }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .calc-box {
+      background: #070B14;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+    }
+    .calc-savings {
+      background: rgba(0, 196, 140, 0.15);
+      border: 1px solid var(--emerald);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .calc-savings .big {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--emerald);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+      margin-top: 32px;
+    }
+    .feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .feat-card h4 {
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: var(--cyan);
+    }
+    .feat-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/site" class="logo-wrap">
+      <svg width="38" height="38" viewBox="0 0 100 100">
+        <polygon points="50,8 84,42 50,76 16,42" fill="#00D4FF"/>
+        <polygon points="50,24 84,58 50,92 16,58" fill="#00C48C"/>
+        <polygon points="50,32 68,50 50,68 32,50" fill="#FFFFFF"/>
+      </svg>
+      <span class="wordmark">alb</span>
+    </a>
+    <div class="nav-actions">
+      <a href="/" class="btn">🖥️ Consola POS & Demo En Vivo</a>
+      <a href="/mobile" class="btn">📱 App Móvil (PWA)</a>
+      <a href="/brand-hub" class="btn btn-emerald">🎨 Kit de Marca & Ventas B2B</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <div>
+        <span class="tag">LEY FINTECH N° 21.521 · NCG N° 514 CMF · ESTÁNDAR ISO 20022</span>
+        <h1>En Chile ya no pides el número de cuenta.<br><span>Pides el alb.</span></h1>
+        <p>
+          La red de pagos instantáneos Cuenta a Cuenta (A2A) que liquida en <strong>1.5 segundos (24/7/365)</strong>. Gratis para personas solo con tu <strong>+569 o RUT</strong>, y con una tarifa única de <strong>0.22%</strong> para comercios sin esperar 48 horas.
+        </p>
+        <div class="cta-row">
+          <a href="/" class="btn btn-emerald" style="padding:14px 24px;font-size:15px;">Probar Demo POS & Escudo Antifraude →</a>
+          <a href="/mobile" class="btn btn-cyan" style="padding:14px 24px;font-size:15px;">Abrir Billetera Móvil</a>
+        </div>
+      </div>
+
+      <!-- Calculadora Interactiva de Ahorro B2B -->
+      <div class="calc-card">
+        <h3>Calculadora de Ahorro para Comercios</h3>
+        <p style="font-size:13px;color:var(--text-muted);">Ingresa tus ventas mensuales actuales con tarjetas (CLP $):</p>
+        <input type="number" id="monthlySales" class="calc-input" value="65000000" step="5000000" oninput="updateCalc()" />
+        <div class="calc-grid">
+          <div class="calc-box">
+            <div style="font-size:11px;color:var(--coral);font-weight:700;">TARJETAS HOY (~1.85% prom)</div>
+            <div id="oldFee" style="font-size:18px;font-weight:800;margin-top:4px;">$1.202.500 / mes</div>
+            <div style="font-size:11px;color:var(--text-muted);">Abono en 24 a 48 hrs hábiles</div>
+          </div>
+          <div class="calc-box" style="border-color:var(--emerald);">
+            <div style="font-size:11px;color:var(--emerald);font-weight:700;">TARIFA PLANA alb (0.22%)</div>
+            <div id="albFee" style="font-size:18px;font-weight:800;margin-top:4px;color:var(--emerald);">$143.000 / mes</div>
+            <div style="font-size:11px;color:var(--cyan);">Abono en 2 Segundos (T+0)</div>
+          </div>
+        </div>
+        <div class="calc-savings">
+          <div style="font-size:12px;font-weight:700;color:var(--text-main);">TU AHORRO NETO ANUAL CON alb:</div>
+          <div class="big" id="annualSavings">+$12.714.000 CLP / año</div>
+          <div style="font-size:12px;color:var(--gold);margin-top:4px;">★ Primer mes 0% comisión para comercios fundadores</div>
+        </div>
+      </div>
+    </section>
+
+    <h2 style="font-size:26px;margin-bottom:8px;">Por qué Chile necesitaba alb desde el minuto 1</h2>
+    <p style="color:var(--text-muted);font-size:15px;">Seguridad bancaria de 7 capas que elimina tanto las comisiones abusivas como la estafa del pantallazo falso.</p>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <h4>⚡ Directorio DICT-CL (+569 y RUT)</h4>
+        <p>Olvídate de pedir RUT, banco, tipo de cuenta y número por WhatsApp. Escribes el celular, verificas el nombre real del titular antes de transferir y el dinero llega en 1.5 segundos.</p>
+      </div>
+      <div class="feat-card">
+        <h4>🛡️ QR Dinámico EMVCo Anti-Pantallazo</h4>
+        <p>Cada cobro en caja o web lleva checksum CRC-16-CCITT y firma criptográfica JWS. Si alguien intenta editar un monto o falsificar un comprobante, el POS lo rechaza en el acto.</p>
+      </div>
+      <div class="feat-card">
+        <h4>🌙 Escudo Nocturno & Bloqueo MED 72h</h4>
+        <p>Límite automático de $200.000 CLP entre 20:00 y 08:00 hrs contra robos de celular, PIN de coacción silencioso y congelamiento cautelar interbancario por 72 horas.</p>
+      </div>
+      <div class="feat-card">
+        <h4>🔌 Plugins Listos (POS, WooCommerce, ERP)</h4>
+        <p>Integración nativa en minutos y modelo de Revenue Share de 2 bps (0.02%) para sistemas POS y ERPs asociados en Chile.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>ALB SpA (alb)</strong> · Red de Pagos Instantáneos A2A & Iniciación de Pagos (PISP) · Santiago de Chile · Contacto: <code>contacto@albpay.cl</code>
+  </footer>
+
+  <script>
+    function fmtCLP(n) {
+      return '$' + Math.round(n).toLocaleString('es-CL');
+    }
+    function updateCalc() {
+      const sales = Math.max(0, Number(document.getElementById('monthlySales').value || 0));
+      const oldCost = sales * 0.0185;
+      const albCost = sales * 0.0022;
+      const annualSave = (oldCost - albCost) * 12;
+      document.getElementById('oldFee').innerText = fmtCLP(oldCost) + ' / mes';
+      document.getElementById('albFee').innerText = fmtCLP(albCost) + ' / mes';
+      document.getElementById('annualSavings').innerText = '+' + fmtCLP(annualSave) + ' CLP / año';
+    }
+  </script>
+</body>
+</html>

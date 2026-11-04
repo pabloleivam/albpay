@@ -1,0 +1,10 @@
+{
+  "name": "ALB — Pago Instantáneo Chile",
+  "short_name": "ALB",
+  "description": "App Móvil de Pagos Instantáneos A2A y Escáner QR EMVCo (Ley Fintech 21.521 CMF)",
+  "start_url": "/mobile",
+  "display": "standalone",
+  "background_color": "#0B0F19",
+  "theme_color": "#0B0F19",
+  "orientation": "portrait"
+}
