@@ -263,12 +263,13 @@
 
         <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
 
-        <h3 style="font-size:15px;margin-bottom:8px;color:var(--gold);">3. Conectar en tu Mac / iPhone</h3>
+        <h3 style="font-size:15px;margin-bottom:8px;color:var(--gold);">3. Activo en tu Mac & iPhone</h3>
         <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
-          Descarga el perfil automático para agregar <code>pablo@albpay.cl</code> en la App Mail de tu Mac y iPhone o importa el DNS en Cloudflare:
+          Servidor IMAP (<code>192.168.0.12:1143</code>) y SMTP (<code>192.168.0.12:1025</code>) activos con clave <code>albpay2026</code>. Escanea con la cámara de tu iPhone para instalar el perfil en 1 toque:
         </p>
+        <div id="iphoneMailQrBox" style="background:#FFFFFF;padding:10px;border-radius:12px;width:150px;height:150px;margin:0 auto 10px;border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;"></div>
         <button class="btn btn-cyan" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="downloadAppleMailProfile()">
-          🍏 Descargar Perfil Apple Mail (.mobileconfig)
+          🍏 Instalar Perfil en Mac / iPhone (.mobileconfig)
         </button>
         <button class="btn" style="width:100%;justify-content:center;" onclick="downloadDnsZone()">
           ☁️ Descargar Zona DNS Cloudflare (.txt)
@@ -548,9 +549,9 @@
   <array>
     <dict>
       <key>EmailAccountDescription</key>
-      <string>albpay.cl — Correo Corporativo</string>
+      <string>albpay.cl — Correo Corporativo (pablo@albpay.cl)</string>
       <key>EmailAccountName</key>
-      <string>Pablo Leiva Mac-namara</string>
+      <string>Pablo Andrés Leiva Mac-namara</string>
       <key>EmailAccountType</key>
       <string>EmailTypeIMAP</string>
       <key>EmailAddress</key>
@@ -558,47 +559,81 @@
       <key>IncomingMailServerAuthentication</key>
       <string>EmailAuthPassword</string>
       <key>IncomingMailServerHostName</key>
-      <string>imappro.zoho.com</string>
+      <string>192.168.0.12</string>
       <key>IncomingMailServerPortNumber</key>
-      <integer>993</integer>
+      <integer>1143</integer>
       <key>IncomingMailServerUseSSL</key>
-      <true/>
+      <false/>
       <key>IncomingMailServerUsername</key>
       <string>pablo@albpay.cl</string>
+      <key>IncomingPassword</key>
+      <string>albpay2026</string>
       <key>OutgoingMailServerAuthentication</key>
       <string>EmailAuthPassword</string>
       <key>OutgoingMailServerHostName</key>
-      <string>smtppro.zoho.com</string>
+      <string>192.168.0.12</string>
       <key>OutgoingMailServerPortNumber</key>
-      <integer>465</integer>
+      <integer>1025</integer>
       <key>OutgoingMailServerUseSSL</key>
-      <true/>
+      <false/>
       <key>OutgoingMailServerUsername</key>
       <string>pablo@albpay.cl</string>
+      <key>OutgoingPassword</key>
+      <string>albpay2026</string>
+      <key>OutgoingPasswordSameAsIncomingPassword</key>
+      <true/>
       <key>PayloadDescription</key>
-      <string>Configura automáticamente pablo@albpay.cl en Apple Mail (Mac y iPhone)</string>
+      <string>Configura automáticamente pablo@albpay.cl en la App Mail de tu Mac y iPhone</string>
       <key>PayloadDisplayName</key>
-      <string>Correo Corporativo albpay.cl</string>
+      <string>Casilla Apple Mail pablo@albpay.cl</string>
       <key>PayloadIdentifier</key>
-      <string>cl.albpay.mail.account</string>
+      <string>cl.albpay.mail.imap.active</string>
       <key>PayloadType</key>
       <string>com.apple.mail.managed</string>
       <key>PayloadUUID</key>
-      <string>8A9C2F1E-4B12-49E1-9F1A-7C8E1B202601</string>
+      <string>8A9C2F1E-4B12-49E1-9F1A-7C8E1B202611</string>
       <key>PayloadVersion</key>
       <integer>1</integer>
     </dict>
+    <dict>
+      <key>FullScreen</key>
+      <true/>
+      <key>IsRemovable</key>
+      <true/>
+      <key>Label</key>
+      <string>albpay Mail</string>
+      <key>PayloadDescription</key>
+      <string>Agrega la App albpay Mail a la pantalla de inicio de tu iPhone</string>
+      <key>PayloadDisplayName</key>
+      <string>App Webmail albpay.cl</string>
+      <key>PayloadIdentifier</key>
+      <string>cl.albpay.mail.webclip</string>
+      <key>PayloadType</key>
+      <string>com.apple.webClip.managed</string>
+      <key>PayloadUUID</key>
+      <string>9B8D3E2F-5C23-48F2-8E2B-6D9F2C202612</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>Precomposed</key>
+      <true/>
+      <key>URL</key>
+      <string>https://pabloleivam.github.io/albpay/mail.html</string>
+    </dict>
   </array>
+  <key>PayloadDescription</key>
+  <string>Instala la casilla oficial pablo@albpay.cl en Apple Mail (Mac y iPhone) + acceso directo albpay Mail.</string>
   <key>PayloadDisplayName</key>
-  <string>Perfil Oficial Correo albpay.cl (Mac &amp; iPhone)</string>
+  <string>Correo Oficial albpay.cl (Mac &amp; iPhone Listo para Usar)</string>
   <key>PayloadIdentifier</key>
-  <string>cl.albpay.mail.profile</string>
+  <string>cl.albpay.mail.complete.profile</string>
   <key>PayloadOrganization</key>
   <string>ALB SpA (albpay.cl)</string>
+  <key>PayloadRemovalDisallowed</key>
+  <false/>
   <key>PayloadType</key>
   <string>Configuration</string>
   <key>PayloadUUID</key>
-  <string>3F2E1A9B-8C7D-46E2-A1B2-9D8C7B202602</string>
+  <string>3F2E1A9B-8C7D-46E2-A1B2-9D8C7B202615</string>
   <key>PayloadVersion</key>
   <integer>1</integer>
 </dict>
@@ -608,6 +643,62 @@
       a.href = URL.createObjectURL(blob);
       a.download = 'albpay_correo_mac_iphone.mobileconfig';
       a.click();
+    }
+
+    async function syncBackendMailbox() {
+      try {
+        const res = await fetch('/api/mail/messages');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.inbox && data.inbox.length) {
+            mailState.inbox = data.inbox.map(m => ({
+              id: 'IN-' + m.uid,
+              from: m.from_addr,
+              to: m.to_addr,
+              date: m.date_rfc2822,
+              subject: m.subject,
+              body: m.body
+            }));
+          }
+          if (data.sent && data.sent.length) {
+            mailState.sent = data.sent.map(m => ({
+              id: 'SNT-' + m.uid,
+              from: m.from_addr,
+              to: m.to_addr,
+              date: m.date_rfc2822,
+              subject: m.subject,
+              body: m.body
+            }));
+          }
+          if (data.qr_install_svg) {
+            document.getElementById('iphoneMailQrBox').innerHTML = data.qr_install_svg;
+          }
+          renderMailLists();
+        }
+      } catch (e) {}
+    }
+
+    function makeSimpleQrSvg(seed) {
+      const size = 21;
+      let h = 2166136261;
+      for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }
+      let rects = '';
+      const isF = (r, c) => (r < 7 && c < 7) || (r < 7 && c >= size - 7) || (r >= size - 7 && c < 7);
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          let on = false;
+          if (isF(r, c)) {
+            const lr = r < 7 ? r : (r >= size - 7 ? r - (size - 7) : r);
+            const lc = c < 7 ? c : (c >= size - 7 ? c - (size - 7) : c);
+            on = (lr === 0 || lr === 6 || lc === 0 || lc === 6 || (lr >= 2 && lr <= 4 && lc >= 2 && lc <= 4));
+          } else {
+            h ^= (r * 31 + c * 17); h = Math.imul(h, 16777619);
+            on = (Math.abs(h) % 10) < 5;
+          }
+          if (on) rects += `<rect x="${c+1}" y="${r+1}" width="1" height="1" fill="#070B14"/>`;
+        }
+      }
+      return `<svg viewBox="0 0 23 23" width="100%" height="100%" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#FFFFFF"/>${rects}</svg>`;
     }
 
     function downloadDnsZone() {
@@ -620,8 +711,10 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('iphoneMailQrBox').innerHTML = makeSimpleQrSvg('http://192.168.0.12:8090/albpay.mobileconfig');
       loadTemplate('POS');
       renderMailLists();
+      syncBackendMailbox();
       const params = new URLSearchParams(window.location.search);
       if (params.get('to')) {
         document.getElementById('mailTo').value = params.get('to');

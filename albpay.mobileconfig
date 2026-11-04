@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <!-- 1. CUENTA NATIVA APPLE MAIL (MAC & IPHONE) CONECTADA AL SERVIDOR ACTIVO ALBPAY -->
+    <dict>
+      <key>EmailAccountDescription</key>
+      <string>albpay.cl — Correo Corporativo (pablo@albpay.cl)</string>
+      <key>EmailAccountName</key>
+      <string>Pablo Andrés Leiva Mac-namara</string>
+      <key>EmailAccountType</key>
+      <string>EmailTypeIMAP</string>
+      <key>EmailAddress</key>
+      <string>pablo@albpay.cl</string>
+      <key>IncomingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>IncomingMailServerHostName</key>
+      <string>192.168.0.12</string>
+      <key>IncomingMailServerPortNumber</key>
+      <integer>1143</integer>
+      <key>IncomingMailServerUseSSL</key>
+      <false/>
+      <key>IncomingMailServerUsername</key>
+      <string>pablo@albpay.cl</string>
+      <key>IncomingPassword</key>
+      <string>albpay2026</string>
+      <key>OutgoingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>OutgoingMailServerHostName</key>
+      <string>192.168.0.12</string>
+      <key>OutgoingMailServerPortNumber</key>
+      <integer>1025</integer>
+      <key>OutgoingMailServerUseSSL</key>
+      <false/>
+      <key>OutgoingMailServerUsername</key>
+      <string>pablo@albpay.cl</string>
+      <key>OutgoingPassword</key>
+      <string>albpay2026</string>
+      <key>OutgoingPasswordSameAsIncomingPassword</key>
+      <true/>
+      <key>PayloadDescription</key>
+      <string>Configura automáticamente pablo@albpay.cl en la App Mail de tu Mac y iPhone</string>
+      <key>PayloadDisplayName</key>
+      <string>Casilla Apple Mail pablo@albpay.cl</string>
+      <key>PayloadIdentifier</key>
+      <string>cl.albpay.mail.imap.active</string>
+      <key>PayloadType</key>
+      <string>com.apple.mail.managed</string>
+      <key>PayloadUUID</key>
+      <string>8A9C2F1E-4B12-49E1-9F1A-7C8E1B202611</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+    </dict>
+    <!-- 2. APP WEBCLIP DIRECTA EN PANTALLA DE INICIO DE IPHONE (FUNCIONA EN WIFI Y 5G) -->
+    <dict>
+      <key>FullScreen</key>
+      <true/>
+      <key>IsRemovable</key>
+      <true/>
+      <key>Label</key>
+      <string>albpay Mail</string>
+      <key>PayloadDescription</key>
+      <string>Agrega la App albpay Mail a la pantalla de inicio de tu iPhone</string>
+      <key>PayloadDisplayName</key>
+      <string>App Webmail albpay.cl</string>
+      <key>PayloadIdentifier</key>
+      <string>cl.albpay.mail.webclip</string>
+      <key>PayloadType</key>
+      <string>com.apple.webClip.managed</string>
+      <key>PayloadUUID</key>
+      <string>9B8D3E2F-5C23-48F2-8E2B-6D9F2C202612</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>Precomposed</key>
+      <true/>
+      <key>URL</key>
+      <string>https://pabloleivam.github.io/albpay/mail.html</string>
+    </dict>
+  </array>
+  <key>PayloadDescription</key>
+  <string>Instala la casilla oficial pablo@albpay.cl en Apple Mail (Mac y iPhone) + acceso directo albpay Mail.</string>
+  <key>PayloadDisplayName</key>
+  <string>Correo Oficial albpay.cl (Mac &amp; iPhone Listo para Usar)</string>
+  <key>PayloadIdentifier</key>
+  <string>cl.albpay.mail.complete.profile</string>
+  <key>PayloadOrganization</key>
+  <string>ALB SpA (albpay.cl)</string>
+  <key>PayloadRemovalDisallowed</key>
+  <false/>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>3F2E1A9B-8C7D-46E2-A1B2-9D8C7B202615</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+</dict>
+</plist>
