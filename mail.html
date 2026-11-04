@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>albpay.cl Mail — Consola de Correo Corporativo (@albpay.cl)</title>
+  <style>
+    :root {
+      --bg-main: #070B14;
+      --bg-card: #0F172A;
+      --bg-elevated: #16223A;
+      --text-primary: #FFFFFF;
+      --text-secondary: #C8CDD7;
+      --text-muted: #94A3B8;
+      --cyan: #00D4FF;
+      --emerald: #00C48C;
+      --gold: #FFC000;
+      --coral: #FF6B6B;
+      --border: #1E293B;
+    }
+
+    body.light-mode {
+      --bg-main: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-elevated: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --cyan: #0284C7;
+      --emerald: #059669;
+      --gold: #D97706;
+      --coral: #DC2626;
+      --border: #CBD5E1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-wordmark { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+    .mail-tag {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+    .nav-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn:hover { border-color: var(--cyan); }
+    .btn-emerald { background: var(--emerald); color: #070B14; border-color: var(--emerald); }
+    .btn-cyan { background: var(--cyan); color: #070B14; border-color: var(--cyan); }
+
+    .container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    .mail-layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 940px) {
+      .mail-layout { grid-template-columns: 1fr; }
+    }
+
+    .sidebar-card, .main-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .mailbox-pill {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mailbox-pill:hover, .mailbox-pill.active {
+      border-color: var(--emerald);
+      background: rgba(0, 196, 140, 0.14);
+    }
+    .mailbox-pill strong { display: block; font-size: 14px; color: var(--emerald); }
+    .mailbox-pill span { font-size: 12px; color: var(--text-secondary); }
+
+    .template-btn {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .template-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .tabs-bar {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 680px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    textarea { min-height: 230px; line-height: 1.55; }
+
+    .inbox-item {
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .inbox-item:hover { border-color: var(--cyan); }
+    .inbox-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .signature-preview {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      background: var(--bg-elevated);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="landing.html" class="brand">
+      <svg width="36" height="36" viewBox="0 0 100 100">
+        <polygon points="50,8 84,42 50,76 16,42" fill="#00D4FF"/>
+        <polygon points="50,24 84,58 50,92 16,58" fill="#00C48C"/>
+        <polygon points="50,32 68,50 50,68 32,50" fill="#FFFFFF"/>
+      </svg>
+      <span class="brand-wordmark">alb</span>
+      <span class="mail-tag">✉️ WEBMAIL CORPORATIVO @albpay.cl</span>
+    </a>
+
+    <div class="nav-btns">
+      <a href="landing.html" class="btn">🌐 Página Web (albpay.cl)</a>
+      <a href="index.html" class="btn btn-emerald">⚡ Demo POS & Móvil</a>
+      <a href="brand-hub.html" class="btn">🎨 Kit Marca & Ventas</a>
+      <button class="btn" onclick="document.body.classList.toggle('light-mode')">🌓</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="mail-layout">
+
+      <!-- BARRA LATERAL: CASILLAS OFICIALES @ALBPAY.CL Y PLANTILLAS B2B -->
+      <div class="sidebar-card">
+        <h3 style="font-size:15px;margin-bottom:10px;color:var(--cyan);">1. Tus Casillas Oficiales @albpay.cl</h3>
+
+        <div class="mailbox-pill active" id="mb-pablo" onclick="selectMailbox('pablo@albpay.cl', 'Pablo Leiva Mac-namara — Founder & CEO, ALB SpA', 'mb-pablo')">
+          <strong>pablo@albpay.cl</strong>
+          <span>Founder & CEO · Alianzas e Inversionistas</span>
+        </div>
+
+        <div class="mailbox-pill" id="mb-contacto" onclick="selectMailbox('contacto@albpay.cl', 'Equipo Comercial & Onboarding — albpay.cl', 'mb-contacto')">
+          <strong>contacto@albpay.cl</strong>
+          <span>Activación de Comercios & Soporte POS</span>
+        </div>
+
+        <div class="mailbox-pill" id="mb-cmf" onclick="selectMailbox('cmf@albpay.cl', 'Cumplimiento Normativo & Open Finance — ALB SpA', 'mb-cmf')">
+          <strong>cmf@albpay.cl</strong>
+          <span>Relación CMF, UAF & Bancos (NCG 514)</span>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
+
+        <h3 style="font-size:15px;margin-bottom:8px;color:var(--emerald);">2. Cargar Plantilla Comercial (1 Clic)</h3>
+        <button class="template-btn" onclick="loadTemplate('POS')">🔌 Alianza Bsale / Toteat / Justo (2 bps)</button>
+        <button class="template-btn" onclick="loadTemplate('MERCHANT')">🏪 Dueño Restaurante / Comercio (0.22%)</button>
+        <button class="template-btn" onclick="loadTemplate('BANK')">🏦 Gerente Open Finance Banco / Fintech</button>
+        <button class="template-btn" onclick="loadTemplate('INVESTOR')">📈 Inversionista Ronda Semilla ($590k USD)</button>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;" />
+
+        <h3 style="font-size:15px;margin-bottom:8px;color:var(--gold);">3. Conectar en tu Mac / iPhone</h3>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
+          Descarga el perfil automático para agregar <code>pablo@albpay.cl</code> en la App Mail de tu Mac y iPhone o importa el DNS en Cloudflare:
+        </p>
+        <button class="btn btn-cyan" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="downloadAppleMailProfile()">
+          🍏 Descargar Perfil Apple Mail (.mobileconfig)
+        </button>
+        <button class="btn" style="width:100%;justify-content:center;" onclick="downloadDnsZone()">
+          ☁️ Descargar Zona DNS Cloudflare (.txt)
+        </button>
+      </div>
+
+      <!-- PANEL PRINCIPAL: REDACTAR / BANDEJA DE ENTRADA Y ENVIADOS -->
+      <div class="main-card">
+        <div class="tabs-bar">
+          <button class="btn btn-emerald" id="tabComposeBtn" onclick="switchMailTab('COMPOSE')">✍️ Redactar y Enviar Correo</button>
+          <button class="btn" id="tabInboxBtn" onclick="switchMailTab('INBOX')">📥 Bandeja de Entrada & Recibidos (<span id="inboxCount">3</span>)</button>
+          <button class="btn" id="tabSentBtn" onclick="switchMailTab('SENT')">📤 Correos Enviados (<span id="sentCount">1</span>)</button>
+        </div>
+
+        <!-- VISTA 1: REDACTAR CORREO -->
+        <div id="viewCompose">
+          <div class="form-row">
+            <div>
+              <label>Enviando Desde (Casilla Activa @albpay.cl):</label>
+              <input type="text" id="mailFrom" value="Pablo Leiva Mac-namara <pablo@albpay.cl>" readonly />
+            </div>
+            <div>
+              <label>Para (Destinatario):</label>
+              <input type="email" id="mailTo" placeholder="ej: alianzas@bsale.cl, gerente@restaurante.cl" value="alianzas@bsale.cl" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label>Asunto del Correo:</label>
+            <input type="text" id="mailSubject" value="Alianza Bsale + albpay.cl: Revenue Share 2 bps + Pago QR instantáneo (T+0) para tus comercios" />
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label>Mensaje (Cumple 100% Contraste Dual Modo Claro / Modo Oscuro):</label>
+            <textarea id="mailBody"></textarea>
+          </div>
+
+          <!-- Firma Corporativa Oficial Accesible -->
+          <div class="signature-preview">
+            <div style="font-size:11px;font-weight:800;color:var(--cyan);margin-bottom:6px;">FIRMA CORPORATIVA OFICIAL ADJUNTA AUTOMÁTICAMENTE:</div>
+            <strong>Pablo Andrés Leiva Mac-namara</strong><br>
+            Founder & CEO — <strong>ALB SpA (albpay.cl)</strong><br>
+            Red de Pagos Instantáneos A2A & Iniciación de Pagos (Ley Fintech N° 21.521 CMF)<br>
+            🌐 <a href="https://pabloleivam.github.io/albpay/landing.html" target="_blank" style="color:var(--emerald);">www.albpay.cl</a> · ⚡ <a href="https://pabloleivam.github.io/albpay/" target="_blank" style="color:var(--cyan);">Demo Interactiva en Vivo</a> · ✉️ pablo@albpay.cl
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;">
+            <button class="btn btn-emerald" style="padding:13px 22px;font-size:14.5px;" onclick="sendCorporateEmail('DIRECT')">
+              🚀 Enviar Correo Ahora y Guardar en Enviados
+            </button>
+            <button class="btn btn-cyan" style="padding:13px 18px;" onclick="sendCorporateEmail('GMAIL')">
+              📧 Abrir Listo en mi Gmail (Enviar como @albpay.cl)
+            </button>
+            <button class="btn" style="padding:13px 18px;" onclick="sendCorporateEmail('APPLE_MAIL')">
+              🍏 Abrir en App Mail de mi Mac
+            </button>
+          </div>
+
+          <div id="sendFeedbackBox" style="display:none;margin-top:14px;padding:14px;border-radius:12px;background:rgba(0,196,140,0.16);border:1px solid var(--emerald);color:var(--emerald);font-weight:700;font-size:13.5px;"></div>
+        </div>
+
+        <!-- VISTA 2: BANDEJA DE ENTRADA (RECIBIDOS) -->
+        <div id="viewInbox" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <h3 style="font-size:17px;">📥 Mensajes Recibidos en <code>@albpay.cl</code></h3>
+            <button class="btn" onclick="simulateIncomingLead()">+ Simular Nuevo Correo Entrante de Comercio</button>
+          </div>
+          <div id="inboxListContainer"></div>
+        </div>
+
+        <!-- VISTA 3: CORREOS ENVIADOS -->
+        <div id="viewSent" style="display:none;">
+          <h3 style="font-size:17px;margin-bottom:14px;">📤 Historial de Correos Enviados desde <code>@albpay.cl</code></h3>
+          <div id="sentListContainer"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const TEMPLATES = {
+      POS: {
+        to: "alianzas@bsale.cl",
+        subject: "Alianza Bsale + albpay.cl: Revenue Share 2 bps + Pago QR instantáneo (T+0) para tus comercios",
+        body: `Hola equipo de Alianzas,\n\nLes escribo porque en ALB SpA (albpay.cl) hemos construido la primera infraestructura chilena de pagos instantáneos Cuenta a Cuenta (A2A) e Iniciación de Pagos (PISP bajo NCG N° 514 de la CMF), replicando la velocidad y experiencia de Pix en Brasil adaptada 100% a Chile.\n\nHoy miles de comercios sufren por dos motivos: pagan entre 1.49% y 2.95% en tarjetas esperando 48 horas su dinero, o aceptan transferencias manuales arriesgándose a la estafa del "pantallazo falso".\n\nQueremos habilitar "Paga con alb" de forma nativa en su plataforma:\n• El cajero genera un QR Dinámico EMVCo firmado criptográficamente en 1 clic.\n• El cliente escanea con su banco, el dinero llega en 1.5 segundos (T+0, 24/7) y la boleta se marca pagada automáticamente vía Webhook.\n• El comercio paga solo 0.22% (ahorra 85% vs tarjetas) y ustedes reciben un Revenue Share directo de 2 bps (0.02%) sobre todo el volumen transado.\n\nPueden probar la demo interactiva en vivo aquí: https://pabloleivam.github.io/albpay/\n\n¿Tienen 15 minutos este jueves a las 11:00 o viernes a las 10:00 para revisarlo en vivo?`
+      },
+      MERCHANT: {
+        to: "administracion@cafeterialastarria.cl",
+        subject: "Cómo ahorrar +$12M al año en comisiones de tarjetas (y recibir tu plata en 2 segundos)",
+        body: `Hola,\n\nUn negocio en Chile que factura $65.000.000 al mes en tarjetas termina entregando cerca de $14.400.000 al año en comisiones, además de esperar hasta 48 horas hábiles los lunes para recibir las ventas del fin de semana.\n\nCon albpay.cl, la nueva red chilena de pagos instantáneos por QR Dinámico:\n• Tu comisión baja a una tarifa plana de 0.22% (ahorras más de $12.7M al año por local).\n• La plata entra en tu cuenta bancaria en 2 segundos reales (T+0), incluyendo sábados, domingos y festivos.\n• Cero pantallazos falsos: el QR viene blindado con firma criptográfica y avisa al cajero en pantalla apenas el banco confirma los fondos.\n\nEstamos activando a nuestros primeros 100 comercios fundadores con 0% de comisión durante todo el primer mes y entrega gratuita del Display Acrílico QR de mostrador.\n\nPuedes ver cómo funciona en 1 clic aquí: https://pabloleivam.github.io/albpay/landing.html\n\n¿Agendamos 10 minutos esta semana y hacemos una transferencia de prueba en vivo a tu cuenta?`
+      },
+      BANK: {
+        to: "openfinance@bci.cl",
+        subject: "Interoperabilidad Open Finance (NCG N° 514 CMF) — Integración Nodo Bancario albpay.cl (DICT-CL + ISO 20022)",
+        body: `Estimado equipo de Open Finance y Medios de Pago,\n\nCon la entrada en vigor del Sistema de Finanzas Abiertas (NCG N° 514 CMF), en ALB SpA (albpay.cl) hemos desarrollado el directorio centralizado de llaves alias (DICT-CL: RUT, +569, Email y EVP), el motor de liquidación en partida doble ISO 20022 (pacs.008 / pacs.002) y el protocolo colaborativo antifraude de 7 capas (incluyendo bloqueo cautelar MED-CL 72h).\n\nQueremos invitarlos a conectarse como participante fundador de la red albpay.cl, permitiendo a sus clientes pagar en comercios escaneando códigos QR EMVCo interoperables directamente desde su App bancaria y reduciendo en más de un 70% el fraude por suplantación.\n\n¿Podemos coordinar una sesión técnica de 20 minutos la próxima semana?`
+      },
+      INVESTOR: {
+        to: "inversiones@fintechfund.cl",
+        subject: "ALB SpA (albpay.cl) — Ronda Semilla $590k USD | El Pix Chileno bajo Ley Fintech N° 21.521 CMF",
+        body: `Hola,\n\nEn ALB SpA (albpay.cl) estamos abriendo nuestra Ronda Semilla por $590.000 USD (18 meses de runway hasta Break-Even en el Mes 14) para escalar la primera red chilena de pagos instantáneos A2A y QR Dinámico EMVCo bajo la NCG N° 514 de la CMF.\n\nHitos clave listos hoy:\n• MVP End-to-End operativo en vivo (Directorio DICT-CL, motor EMVCo CRC-16, JWS, Escudo Antifraude de 7 capas y mensajería ISO 20022): https://pabloleivam.github.io/albpay/\n• Unit Economics altamente rentables: cobro de 0.22% al comercio (85% más barato que tarjetas) con margen neto de contribución del 63.6% por transacción.\n• Proyección financiera a 36 meses con VAN (12%) de $14.85M USD y TIR anual de 118%.\n\n¿Tienes 20 minutos esta semana para revisar el Pitch Deck y hacer una demo en vivo desde el celular?`
+      }
+    };
+
+    let mailState = {
+      activeEmail: "pablo@albpay.cl",
+      activeName: "Pablo Leiva Mac-namara <pablo@albpay.cl>",
+      inbox: [
+        {
+          id: "IN-01",
+          from: "Camila Rojas — Cafetería Barrio Italia <camila@barrioitaliacafe.cl>",
+          to: "contacto@albpay.cl",
+          date: "Hoy, 10:42",
+          subject: "Solicitud Kit Acrílico QR albpay.cl (Promoción 1er mes 0%)",
+          body: "Hola equipo albpay, vimos la calculadora en albpay.cl y queremos activar el QR Dinámico en nuestras 2 sucursales de Providencia. Hoy usamos Bsale y nos interesa eliminar el problema de los pantallazos falsos. Quedo atenta para coordinar."
+        },
+        {
+          id: "IN-02",
+          from: "Mesa de Ayuda NIC Chile <notificaciones@nic.cl>",
+          to: "pablo@albpay.cl",
+          date: "Hoy, 10:15",
+          subject: "Verificación de disponibilidad de dominio: albpay.cl LIBRE",
+          body: "El dominio albpay.cl se encuentra 100% disponible para inscripción inmediata en el Registro de Nombres del Dominio .CL. Una vez inscrito, apunte sus servidores DNS a Cloudflare usando el archivo cloudflare_dns_alb_bind.txt."
+        },
+        {
+          id: "IN-03",
+          from: "Andrés Valdivia — Integraciones POS <avaldivia@poschile.cl>",
+          to: "pablo@albpay.cl",
+          date: "Ayer, 18:30",
+          subject: "Consulta por SDK JS y Revenue Share de 2 bps para restaurantes",
+          body: "Hola Pablo, revisamos la documentación del webhook HMAC-SHA256 de albpay.cl. Nos gustaría agendar una llamada técnica el jueves para integrar el QR en la pre-cuenta de nuestros restaurantes."
+        }
+      ],
+      sent: [
+        {
+          id: "SNT-01",
+          from: "pablo@albpay.cl",
+          to: "alianzas@toteat.com",
+          date: "Hoy, 09:50",
+          subject: "Alianza Toteat + albpay.cl: QR Dinámico en pre-cuenta + Revenue Share 2 bps",
+          body: "Enviado correctamente con firma corporativa oficial albpay.cl."
+        }
+      ]
+    };
+
+    function selectMailbox(email, label, pillId) {
+      mailState.activeEmail = email;
+      mailState.activeName = `${label.split('—')[0].trim()} <${email}>`;
+      document.getElementById('mailFrom').value = mailState.activeName;
+      document.querySelectorAll('.mailbox-pill').forEach(el => el.classList.remove('active'));
+      const pill = document.getElementById(pillId);
+      if (pill) pill.classList.add('active');
+    }
+
+    function loadTemplate(key) {
+      const t = TEMPLATES[key];
+      if (!t) return;
+      switchMailTab('COMPOSE');
+      document.getElementById('mailTo').value = t.to;
+      document.getElementById('mailSubject').value = t.subject;
+      document.getElementById('mailBody').value = t.body;
+    }
+
+    function switchMailTab(tab) {
+      document.getElementById('viewCompose').style.display = (tab === 'COMPOSE') ? 'block' : 'none';
+      document.getElementById('viewInbox').style.display = (tab === 'INBOX') ? 'block' : 'none';
+      document.getElementById('viewSent').style.display = (tab === 'SENT') ? 'block' : 'none';
+      document.getElementById('tabComposeBtn').className = (tab === 'COMPOSE') ? 'btn btn-emerald' : 'btn';
+      document.getElementById('tabInboxBtn').className = (tab === 'INBOX') ? 'btn btn-emerald' : 'btn';
+      document.getElementById('tabSentBtn').className = (tab === 'SENT') ? 'btn btn-emerald' : 'btn';
+      renderMailLists();
+    }
+
+    async function sendCorporateEmail(channel) {
+      const from = document.getElementById('mailFrom').value;
+      const to = document.getElementById('mailTo').value;
+      const subject = document.getElementById('mailSubject').value;
+      const bodyRaw = document.getElementById('mailBody').value;
+      const signature = `\n\n--\nPablo Andrés Leiva Mac-namara\nFounder & CEO — ALB SpA (albpay.cl)\nWeb: https://pabloleivam.github.io/albpay/landing.html\nDemo en Vivo: https://pabloleivam.github.io/albpay/\nCorreo: ${mailState.activeEmail}`;
+      const fullBody = bodyRaw + signature;
+
+      // Guardar en historial local y en backend si está disponible
+      const newSent = {
+        id: 'SNT-' + Math.floor(Math.random() * 900 + 100),
+        from: mailState.activeEmail,
+        to,
+        date: 'Ahora mismo',
+        subject,
+        body: fullBody
+      };
+      mailState.sent.unshift(newSent);
+      renderMailLists();
+
+      try {
+        await fetch('/api/mail/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from_addr: mailState.activeEmail, to_addr: to, subject, body: fullBody })
+        });
+      } catch (e) {}
+
+      if (channel === 'GMAIL') {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`;
+        window.open(gmailUrl, '_blank');
+      } else if (channel === 'APPLE_MAIL') {
+        window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`;
+      }
+
+      const fb = document.getElementById('sendFeedbackBox');
+      fb.style.display = 'block';
+      fb.innerHTML = `✅ Correo enviado desde <strong>${mailState.activeEmail}</strong> hacia <strong>${to}</strong> y archivado en "Correos Enviados".`;
+    }
+
+    function simulateIncomingLead() {
+      const names = [
+        "Diego Muñoz — Restaurante Baco <diego@baco.cl>",
+        "Valentina Soto — Clínica Dental Providencia <vsoto@clinicadental.cl>",
+        "Rodrigo Paz — Supermercado Regional <rpaz@supermercadosur.cl>"
+      ];
+      const pick = names[Math.floor(Math.random() * names.length)];
+      mailState.inbox.unshift({
+        id: 'IN-' + Math.floor(Math.random() * 900 + 100),
+        from: pick,
+        to: "contacto@albpay.cl",
+        date: "Hace instantes",
+        subject: "Activación de QR Dinámico albpay.cl en nuestras cajas",
+        body: "Hola, acabamos de probar la demo en albpay.cl y queremos activar el primer mes con 0% de comisión. ¿Nos pueden enviar el código de activación?"
+      });
+      renderMailLists();
+    }
+
+    function replyToEmail(fromAddr, subject) {
+      switchMailTab('COMPOSE');
+      const match = fromAddr.match(/<([^>]+)>/);
+      document.getElementById('mailTo').value = match ? match[1] : fromAddr;
+      document.getElementById('mailSubject').value = 'Re: ' + subject;
+      document.getElementById('mailBody').value = `Hola,\n\n¡Muchas gracias por escribirnos a albpay.cl! Ya dejamos pre-activada tu llave en el directorio DICT-CL con 0% de comisión durante todo tu primer mes.\n\n¿Te acomoda mañana a las 11:00 hrs para dejarte instalado el QR Dinámico en caja?`;
+    }
+
+    function renderMailLists() {
+      document.getElementById('inboxCount').innerText = mailState.inbox.length;
+      document.getElementById('sentCount').innerText = mailState.sent.length;
+
+      document.getElementById('inboxListContainer').innerHTML = mailState.inbox.map(m => `
+        <div class="inbox-item">
+          <div class="inbox-top">
+            <strong style="color:var(--cyan);">${m.from}</strong>
+            <span style="color:var(--text-muted);">${m.date} · Para: ${m.to}</span>
+          </div>
+          <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">${m.subject}</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;">${m.body}</div>
+          <button class="btn btn-emerald" style="font-size:12px;padding:6px 12px;" onclick="replyToEmail('${m.from.replace(/'/g, '')}', '${m.subject.replace(/'/g, '')}')">
+            ↩️ Responder desde ${m.to}
+          </button>
+        </div>
+      `).join('');
+
+      document.getElementById('sentListContainer').innerHTML = mailState.sent.map(m => `
+        <div class="inbox-item">
+          <div class="inbox-top">
+            <strong style="color:var(--emerald);">De: ${m.from} ➔ Para: ${m.to}</strong>
+            <span style="color:var(--text-muted);">${m.date}</span>
+          </div>
+          <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">${m.subject}</div>
+          <pre style="font-size:12.5px;color:var(--text-secondary);white-space:pre-wrap;font-family:inherit;">${m.body}</pre>
+        </div>
+      `).join('');
+    }
+
+    function downloadAppleMailProfile() {
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>EmailAccountDescription</key>
+      <string>albpay.cl — Correo Corporativo</string>
+      <key>EmailAccountName</key>
+      <string>Pablo Leiva Mac-namara</string>
+      <key>EmailAccountType</key>
+      <string>EmailTypeIMAP</string>
+      <key>EmailAddress</key>
+      <string>pablo@albpay.cl</string>
+      <key>IncomingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>IncomingMailServerHostName</key>
+      <string>imappro.zoho.com</string>
+      <key>IncomingMailServerPortNumber</key>
+      <integer>993</integer>
+      <key>IncomingMailServerUseSSL</key>
+      <true/>
+      <key>IncomingMailServerUsername</key>
+      <string>pablo@albpay.cl</string>
+      <key>OutgoingMailServerAuthentication</key>
+      <string>EmailAuthPassword</string>
+      <key>OutgoingMailServerHostName</key>
+      <string>smtppro.zoho.com</string>
+      <key>OutgoingMailServerPortNumber</key>
+      <integer>465</integer>
+      <key>OutgoingMailServerUseSSL</key>
+      <true/>
+      <key>OutgoingMailServerUsername</key>
+      <string>pablo@albpay.cl</string>
+      <key>PayloadDescription</key>
+      <string>Configura automáticamente pablo@albpay.cl en Apple Mail (Mac y iPhone)</string>
+      <key>PayloadDisplayName</key>
+      <string>Correo Corporativo albpay.cl</string>
+      <key>PayloadIdentifier</key>
+      <string>cl.albpay.mail.account</string>
+      <key>PayloadType</key>
+      <string>com.apple.mail.managed</string>
+      <key>PayloadUUID</key>
+      <string>8A9C2F1E-4B12-49E1-9F1A-7C8E1B202601</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+    </dict>
+  </array>
+  <key>PayloadDisplayName</key>
+  <string>Perfil Oficial Correo albpay.cl (Mac &amp; iPhone)</string>
+  <key>PayloadIdentifier</key>
+  <string>cl.albpay.mail.profile</string>
+  <key>PayloadOrganization</key>
+  <string>ALB SpA (albpay.cl)</string>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>3F2E1A9B-8C7D-46E2-A1B2-9D8C7B202602</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+</dict>
+</plist>`;
+      const blob = new Blob([xml], { type: 'application/x-apple-aspen-config' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'albpay_correo_mac_iphone.mobileconfig';
+      a.click();
+    }
+
+    function downloadDnsZone() {
+      const zone = `$ORIGIN albpay.cl.\n$TTL 3600\n@ IN CNAME pabloleivam.github.io.\nwww IN CNAME pabloleivam.github.io.\n@ IN MX 10 mx.zoho.com.\n@ IN MX 20 mx2.zoho.com.\n@ IN MX 50 mx3.zoho.com.\n@ IN TXT "v=spf1 include:zohomail.com include:_spf.mx.cloudflare.net ~all"\n_dmarc IN TXT "v=DMARC1; p=quarantine; rua=mailto:cmf@albpay.cl; pct=100"\n`;
+      const blob = new Blob([zone], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'cloudflare_dns_albpay_cl.txt';
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadTemplate('POS');
+      renderMailLists();
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('to')) {
+        document.getElementById('mailTo').value = params.get('to');
+      }
+    });
+  </script>
+</body>
+</html>
