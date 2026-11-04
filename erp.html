@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>albpay.cl ERP — Conciliación Contable Automática, Liquidaciones & DTE SII</title>
+  <style>
+    :root {
+      --bg-main: #070B14;
+      --bg-card: #0F172A;
+      --bg-elevated: #15223B;
+      --text-primary: #FFFFFF;
+      --text-secondary: #C8CDD7;
+      --text-muted: #94A3B8;
+      --cyan: #00D4FF;
+      --emerald: #00C48C;
+      --gold: #FFC000;
+      --coral: #FF6B6B;
+      --border: #1E293B;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    body.light-mode {
+      --bg-main: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --bg-elevated: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --cyan: #0284C7;
+      --emerald: #059669;
+      --gold: #D97706;
+      --coral: #DC2626;
+      --border: #CBD5E1;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.5;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-wordmark { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+    .erp-tag {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 196, 140, 0.16);
+      color: var(--emerald);
+      border: 1px solid var(--emerald);
+    }
+    .nav-btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.16s;
+    }
+    .btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
+    .btn-emerald { background: var(--emerald); color: #070B14; border-color: var(--emerald); }
+    .btn-cyan { background: var(--cyan); color: #070B14; border-color: var(--cyan); }
+
+    .container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 26px 20px 70px;
+    }
+
+    /* BANNER EXPLICATIVO DEL DOLOR CONTABLE QUE RESUELVE ALBPAY */
+    .hero-erp {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+      border: 2px solid var(--emerald);
+      border-radius: 20px;
+      padding: 26px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 24px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 900px) {
+      .hero-erp { grid-template-columns: 1fr; }
+    }
+    .hero-erp h1 { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+    .hero-erp p { font-size: 14.5px; color: var(--text-secondary); margin-bottom: 14px; }
+
+    /* KPIs DE LIQUIDACIÓN Y CONCILIACIÓN */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .kpi-label { font-size: 11.5px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+    .kpi-val { font-size: 24px; font-weight: 900; margin: 4px 0; color: var(--cyan); }
+    .kpi-sub { font-size: 12px; color: var(--text-secondary); }
+
+    /* SELECTOR DE ERP POPULAR EN CHILE */
+    .erp-selector-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .erp-pill {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+    .erp-pill:hover, .erp-pill.active {
+      border-color: var(--cyan);
+      background: rgba(0, 212, 255, 0.1);
+    }
+    .erp-pill strong { display: block; font-size: 14.5px; color: var(--text-primary); }
+    .erp-pill span { font-size: 11.5px; color: var(--text-secondary); }
+
+    /* PANEL CENTRAL: ASIENTO CONTABLE AUTOMÁTICO Y EXPORTADORES */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 980px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 { font-size: 18px; margin-bottom: 6px; }
+    .card p.sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.8px;
+    }
+    th {
+      background: #1B365D;
+      color: #FFFFFF;
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    pre.code-preview {
+      background: #050811;
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 14px;
+      color: #A5F3FC;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11.8px;
+      overflow-x: auto;
+      max-height: 290px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="landing.html" class="brand">
+      <svg width="36" height="36" viewBox="0 0 100 100">
+        <polygon points="50,8 84,42 50,76 16,42" fill="#00D4FF"/>
+        <polygon points="50,24 84,58 50,92 16,58" fill="#00C48C"/>
+        <polygon points="50,32 68,50 50,68 32,50" fill="#FFFFFF"/>
+      </svg>
+      <span class="brand-wordmark">alb</span>
+      <span class="erp-tag">🧮 CONCILIACIÓN ERP & LIQUIDACIONES SII</span>
+    </a>
+
+    <div class="nav-btns">
+      <a href="landing.html" class="btn">🌐 Web Comercial</a>
+      <a href="index.html" class="btn btn-emerald">⚡ Demo POS & Móvil</a>
+      <a href="mail.html" class="btn btn-cyan">✉️ Correo @albpay.cl</a>
+      <a href="brand-hub.html" class="btn">🎨 Kit Marca & Ventas</a>
+      <button class="btn" onclick="document.body.classList.toggle('light-mode')">🌓</button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 1. HERO DEL MOTOR CONTABLE ALBPAY -->
+    <div class="hero-erp">
+      <div>
+        <h1>Fin a las horas cuadrando cartolas bancarias contra boletas y facturas del SII</h1>
+        <p>
+          Con las tarjetas tradicionales, el banco deposita un monto global 48 horas después descontando comisiones mezcladas, obligando al contador a cruzar cientos de boletas a mano.
+          <strong>En albpay.cl cada pago viaja con el RUT del cliente y el Folio DTE del SII dentro del código QR</strong>: al segundo 1.5 salda la factura por cobrar, contabiliza el 0.22% de gasto de comisión y cuadra el banco en tu ERP sin tocar un Excel.
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-emerald" onclick="simulateNewDtePayment()">⚡ Simular Nueva Venta Facturada SII + Conciliación Automática</button>
+          <button class="btn btn-cyan" onclick="exportErpFile('CSV')">📥 Descargar Asiento Contable (.CSV para ERP)</button>
+          <button class="btn" onclick="exportErpFile('CAMT053')">🏦 Descargar Cartola ISO 20022 (camt.053 SAP/D365)</button>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-main);padding:18px;border-radius:16px;border:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:800;color:var(--emerald);margin-bottom:6px;">ASIENTO CONTABLE AUTOMÁTICO (PARTIDA DOBLE CHILE):</div>
+        <div style="font-size:12.5px;display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+          <span><strong>DEBE</strong> · 1.1.01.002 Banco Disponible (T+0)</span>
+          <strong style="color:var(--emerald);" id="journalNetBank">$10.227.450</strong>
+        </div>
+        <div style="font-size:12.5px;display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+          <span><strong>DEBE</strong> · 5.1.04.008 Comisión Medios Pago (0.22%)</span>
+          <strong style="color:var(--gold);" id="journalFeeExpense">$22.550</strong>
+        </div>
+        <div style="font-size:12.5px;display:flex;justify-content:space-between;padding:6px 0;">
+          <span><strong>HABER</strong> · 1.1.04.001 Clientes / DTEs por Cobrar</span>
+          <strong style="color:var(--cyan);" id="journalGrossAr">$10.250.000</strong>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--emerald);font-weight:800;text-align:right;">
+          ✓ Cuadratura Partida Doble: Diferencia $0 CLP
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. KPIs DE LIQUIDACIÓN EN VIVO -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Ventas Brutas DTE Conciliadas</div>
+        <div class="kpi-val" id="kpiGrossTotal">$10.250.000</div>
+        <div class="kpi-sub">100% cruzado con Folio SII (Tipo 33 y 39)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Comisión albpay (0.22% Devengado)</div>
+        <div class="kpi-val" style="color:var(--gold);" id="kpiFeeTotal">$22.550</div>
+        <div class="kpi-sub">vs. $205.000 que habrías pagado en tarjetas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Abono Neto Líquido en Banco (T+0)</div>
+        <div class="kpi-val" style="color:var(--emerald);" id="kpiNetTotal">$10.227.450</div>
+        <div class="kpi-sub">Depositado en 1.5 segundos (Sin desfase 48h)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Documentos SII sin Conciliar</div>
+        <div class="kpi-val" style="color:var(--emerald);">0 DTEs</div>
+        <div class="kpi-sub">Cero transferencias huérfanas en cartola</div>
+      </div>
+    </div>
+
+    <!-- 3. SELECTOR DE ERP CHILENO -->
+    <h2 style="font-size:18px;margin-bottom:10px;color:var(--cyan);">1. Selecciona tu ERP o Sistema Contable para ver el Formato Nativo de Conciliación:</h2>
+    <div class="erp-selector-bar">
+      <div class="erp-pill active" id="erp-DEFONTANA" onclick="selectErp('DEFONTANA')">
+        <strong>Defontana ERP</strong>
+        <span>API REST v2 + Comprobante CSV</span>
+      </div>
+      <div class="erp-pill" id="erp-SOFTLAND" onclick="selectErp('SOFTLAND')">
+        <strong>Softland ERP (CW)</strong>
+        <span>Centralización Contable + Auxiliar RUT</span>
+      </div>
+      <div class="erp-pill" id="erp-NUBOX" onclick="selectErp('NUBOX')">
+        <strong>Nubox Contabilidad</strong>
+        <span>Conciliador Cartola + Cruce DTE SII</span>
+      </div>
+      <div class="erp-pill" id="erp-BSALE" onclick="selectErp('BSALE')">
+        <strong>Bsale POS / Facturación</strong>
+        <span>POST /v1/payments.json (Tiempo Real)</span>
+      </div>
+      <div class="erp-pill" id="erp-SAP_D365" onclick="selectErp('SAP_D365')">
+        <strong>SAP B1 / Dynamics 365</strong>
+        <span>Extracto ISO 20022 camt.053 + OData</span>
+      </div>
+      <div class="erp-pill" id="erp-CHIPAX_KAME" onclick="selectErp('CHIPAX_KAME')">
+        <strong>Chipax / Kame / Buk</strong>
+        <span>Webhook Instantáneo HMAC-SHA256</span>
+      </div>
+    </div>
+
+    <!-- 4. TABLA DE CONCILIACIÓN DTE SII Y GENERADOR DE PAYLOAD ERP -->
+    <div class="grid-2">
+      <div class="card">
+        <h2>2. Auxiliar de Liquidaciones en Tiempo Real (DTE SII ➔ Banco T+0)</h2>
+        <p class="sub">Cada fila muestra el documento tributario del SII saldado automáticamente con su desglose contable exacto:</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Folio DTE SII</th>
+                <th>RUT / Cliente Pagador</th>
+                <th>Venta Bruta</th>
+                <th>Comisión (0.22%)</th>
+                <th>Abono Neto Banco</th>
+                <th>Estado ERP</th>
+              </tr>
+            </thead>
+            <tbody id="erpReconciliationBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <h2 id="erpFormatTitle">3. Conector en Vivo: Defontana ERP</h2>
+          <span class="erp-tag" id="erpProtocolBadge">API REST + CSV</span>
+        </div>
+        <p class="sub" id="erpFormatDesc">
+          Payload y asiento de centralización generado automáticamente por albpay.cl para cancelar la cuenta por cobrar del cliente y registrar la comisión:
+        </p>
+        <pre class="code-preview" id="erpCodePreview"></pre>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+          <button class="btn btn-emerald" onclick="copyErpPayload()">📋 Copiar Conector / Payload ERP</button>
+          <button class="btn btn-cyan" onclick="exportErpFile('CSV')">📥 Descargar Archivo para Importar al ERP</button>
+        </div>
+        <div id="erpToast" style="display:none;margin-top:10px;padding:10px;border-radius:8px;background:rgba(0,196,140,0.16);color:var(--emerald);font-size:12.5px;font-weight:700;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentErp = 'DEFONTANA';
+
+    let settlements = [
+      {
+        txid: "ALB984120A",
+        dte_type: "Factura Electrónica (33)",
+        dte_folio: "F-10482",
+        payer_rut: "76.890.123-6",
+        payer_name: "Comercial Los Andes SpA",
+        gross_clp: 4850000,
+        fee_clp: 10670,
+        net_clp: 4839330,
+        settled_at: "Hoy, 11:18:04"
+      },
+      {
+        txid: "ALB984119B",
+        dte_type: "Factura Electrónica (33)",
+        dte_folio: "F-10481",
+        payer_rut: "77.123.450-K",
+        payer_name: "Distribuidora Central Ltda.",
+        gross_clp: 3200000,
+        fee_clp: 7040,
+        net_clp: 3192960,
+        settled_at: "Hoy, 10:54:19"
+      },
+      {
+        txid: "ALB984118C",
+        dte_type: "Boleta Electrónica (39)",
+        dte_folio: "B-88412",
+        payer_rut: "15.432.876-9",
+        payer_name: "Pablo Andrés Leiva",
+        gross_clp: 2200000,
+        fee_clp: 4840,
+        net_clp: 2195160,
+        settled_at: "Hoy, 10:12:45"
+      }
+    ];
+
+    function fmtCLP(n) {
+      return '$' + Math.round(Number(n) || 0).toLocaleString('es-CL');
+    }
+
+    function selectErp(erpKey) {
+      currentErp = erpKey;
+      document.querySelectorAll('.erp-pill').forEach(el => el.classList.remove('active'));
+      const pill = document.getElementById('erp-' + erpKey);
+      if (pill) pill.classList.add('active');
+      renderErpView();
+    }
+
+    function simulateNewDtePayment() {
+      const sampleClients = [
+        { rut: "76.543.210-3", name: "Inversiones Santa María SpA", type: "Factura Electrónica (33)", prefix: "F-" },
+        { rut: "18.234.567-9", name: "Camila Ignacia Rojas", type: "Boleta Electrónica (39)", prefix: "B-" },
+        { rut: "76.111.222-4", name: "Clínica Providencia S.A.", type: "Factura Electrónica (33)", prefix: "F-" }
+      ];
+      const pick = sampleClients[Math.floor(Math.random() * sampleClients.length)];
+      const gross = (Math.floor(Math.random() * 18) + 3) * 250000;
+      const fee = Math.round(gross * 0.0022);
+      const net = gross - fee;
+      const folio = pick.prefix + Math.floor(10500 + Math.random() * 900);
+      const txid = "ALB" + Math.random().toString(36).substring(2, 9).toUpperCase();
+
+      settlements.unshift({
+        txid,
+        dte_type: pick.type,
+        dte_folio: folio,
+        payer_rut: pick.rut,
+        payer_name: pick.name,
+        gross_clp: gross,
+        fee_clp: fee,
+        net_clp: net,
+        settled_at: "Ahora mismo (1.4s)"
+      });
+      renderErpView();
+    }
+
+    function renderErpView() {
+      const totalGross = settlements.reduce((s, x) => s + x.gross_clp, 0);
+      const totalFee = settlements.reduce((s, x) => s + x.fee_clp, 0);
+      const totalNet = settlements.reduce((s, x) => s + x.net_clp, 0);
+
+      document.getElementById('kpiGrossTotal').innerText = fmtCLP(totalGross);
+      document.getElementById('kpiFeeTotal').innerText = fmtCLP(totalFee);
+      document.getElementById('kpiNetTotal').innerText = fmtCLP(totalNet);
+
+      document.getElementById('journalNetBank').innerText = fmtCLP(totalNet);
+      document.getElementById('journalFeeExpense').innerText = fmtCLP(totalFee);
+      document.getElementById('journalGrossAr').innerText = fmtCLP(totalGross);
+
+      document.getElementById('erpReconciliationBody').innerHTML = settlements.map(item => `
+        <tr>
+          <td>
+            <strong style="color:var(--cyan);">${item.dte_folio}</strong><br>
+            <span style="font-size:11px;color:var(--text-muted);">${item.dte_type}</span>
+          </td>
+          <td>
+            <strong>${item.payer_name}</strong><br>
+            <span style="font-size:11px;color:var(--text-muted);">RUT ${item.payer_rut} · TX ${item.txid}</span>
+          </td>
+          <td style="font-weight:800;">${fmtCLP(item.gross_clp)}</td>
+          <td style="color:var(--gold);font-weight:700;">-${fmtCLP(item.fee_clp)}</td>
+          <td style="color:var(--emerald);font-weight:900;">${fmtCLP(item.net_clp)}</td>
+          <td>
+            <span style="display:inline-block;padding:3px 8px;border-radius:6px;background:rgba(0,196,140,0.16);color:var(--emerald);font-size:11px;font-weight:800;">
+              ✓ Saldado en ${currentErp}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+
+      updatePayloadPreview(settlements[0], totalGross, totalFee, totalNet);
+    }
+
+    function updatePayloadPreview(latest, totalGross, totalFee, totalNet) {
+      const titleEl = document.getElementById('erpFormatTitle');
+      const badgeEl = document.getElementById('erpProtocolBadge');
+      const codeEl = document.getElementById('erpCodePreview');
+
+      if (currentErp === 'DEFONTANA') {
+        titleEl.innerText = '3. Conector en Vivo: Defontana ERP (API v2 + Asiento)';
+        badgeEl.innerText = 'POST /api/v2/Sale/SavePayment';
+        codeEl.innerText = JSON.stringify({
+          erp_target: "DEFONTANA_CLOUD_CL",
+          endpoint: "https://api.defontana.com/api/v2/Sale/SavePayment",
+          auto_reconciliation: true,
+          dte_reference: {
+            documentType: latest.dte_folio.startsWith('F') ? 33 : 39,
+            folio: latest.dte_folio.replace(/[^0-9]/g, ''),
+            clientRut: latest.payer_rut
+          },
+          accounting_voucher: {
+            gloss: `Liquidación Instantánea albpay.cl TX ${latest.txid} - DTE ${latest.dte_folio}`,
+            entries: [
+              { account: "1.1.01.002", name: "Banco Cuenta Corriente", debit: latest.net_clp, credit: 0 },
+              { account: "5.1.04.008", name: "Comisiones albpay (0.22%)", debit: latest.fee_clp, credit: 0 },
+              { account: "1.1.04.001", name: "Clientes Nacionales (DTE Saldado)", debit: 0, credit: latest.gross_clp, auxiliaryRut: latest.payer_rut }
+            ]
+          }
+        }, null, 2);
+      } else if (currentErp === 'SOFTLAND') {
+        titleEl.innerText = '3. Conector en Vivo: Softland ERP (Módulo Contabilidad CW)';
+        badgeEl.innerText = 'Formato Oficial CW (.CSV)';
+        codeEl.innerText =
+`Cuenta;Debe;Haber;Glosa_Movimiento;Cod_Auxiliar_RUT;Tipo_Doc_SII;Num_Doc_Folio;Centro_Costo;Ref_TX_ALB
+1-1-01-002;${latest.net_clp};0;Abono Instantaneo T+0 albpay ${latest.dte_folio};${latest.payer_rut};TR;${latest.dte_folio.replace(/[^0-9]/g,'')};ADM-01;${latest.txid}
+5-1-04-008;${latest.fee_clp};0;Comision 0.22% albpay ${latest.dte_folio};77987654-3;FC;${latest.dte_folio.replace(/[^0-9]/g,'')};COM-01;${latest.txid}
+1-1-04-001;0;${latest.gross_clp};Cancelacion Automatica DTE ${latest.dte_folio};${latest.payer_rut};${latest.dte_folio.startsWith('F')?'FA':'BO'};${latest.dte_folio.replace(/[^0-9]/g,'')};VEN-01;${latest.txid}`;
+      } else if (currentErp === 'NUBOX') {
+        titleEl.innerText = '3. Conector en Vivo: Nubox Contabilidad & Cartola';
+        badgeEl.innerText = 'Cruce Automático RUT + Folio';
+        codeEl.innerText = JSON.stringify({
+          erp_target: "NUBOX_CHILE",
+          accion: "CONCILIAR_DOCUMENTO_VENTA_Y_CARTOLA",
+          rut_receptor_dte: latest.payer_rut,
+          razon_social: latest.payer_name,
+          tipo_dte_sii: latest.dte_folio.startsWith('F') ? 33 : 39,
+          folio_dte: latest.dte_folio,
+          abono_banco_neto_clp: latest.net_clp,
+          gasto_comision_alb_clp: latest.fee_clp,
+          total_documento_saldado_clp: latest.gross_clp,
+          estado_conciliacion: "CONCILIADO_100_PORCIENTO"
+        }, null, 2);
+      } else if (currentErp === 'BSALE') {
+        titleEl.innerText = '3. Conector en Vivo: Bsale POS & Facturación SII';
+        badgeEl.innerText = 'POST /v1/payments.json';
+        codeEl.innerText = JSON.stringify({
+          payment: {
+            recordDate: Math.floor(Date.now() / 1000),
+            amount: latest.gross_clp,
+            operationNumber: latest.txid,
+            accounting: {
+              net_settled_to_bank: latest.net_clp,
+              albpay_fee_022_pct: latest.fee_clp
+            },
+            documentId: latest.dte_folio,
+            paymentTypeId: "ALBPAY_INSTANT_QR"
+          }
+        }, null, 2);
+      } else if (currentErp === 'SAP_D365') {
+        titleEl.innerText = '3. Conector en Vivo: SAP B1 / Microsoft Dynamics 365';
+        badgeEl.innerText = 'ISO 20022 camt.053 + OData AR';
+        codeEl.innerText =
+`<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <Stmt>
+      <Id>STMT-${latest.txid}</Id>
+      <Ntry>
+        <Amt Ccy="CLP">${latest.net_clp}</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <NtryDtls>
+          <TxDtls>
+            <Refs><EndToEndId>${latest.txid}</EndToEndId><InstrId>${latest.dte_folio}</InstrId></Refs>
+            <AmtDtls>
+              <InstdAmt><Amt Ccy="CLP">${latest.gross_clp}</Amt></InstdAmt>
+              <Chrgs><TtlChrgsAndTaxAmt Ccy="CLP">${latest.fee_clp}</TtlChrgsAndTaxAmt></Chrgs>
+            </AmtDtls>
+            <RltdPties><Dbtr><Nm>${latest.payer_name}</Nm><Id><OrgId><Othr><Id>${latest.payer_rut}</Id></Othr></OrgId></Id></Dbtr></RltdPties>
+            <RmtInf><Ustrd>DTE_SII:${latest.dte_folio}|RUT:${latest.payer_rut}|NET:${latest.net_clp}|FEE:${latest.fee_clp}</Ustrd></RmtInf>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>`;
+      } else {
+        titleEl.innerText = '3. Conector en Vivo: Chipax / Kame ERP / Buk';
+        badgeEl.innerText = 'Webhook HMAC-SHA256';
+        codeEl.innerText = JSON.stringify({
+          event: "albpay.settlement.reconciled",
+          txid: latest.txid,
+          dte_sii: { type: latest.dte_type, folio: latest.dte_folio, customer_rut: latest.payer_rut },
+          amounts_clp: { gross_invoice: latest.gross_clp, fee_022_pct: latest.fee_clp, bank_deposit_t0: latest.net_clp },
+          reconciliation_status: "MATCHED_AUTOMATICALLY"
+        }, null, 2);
+      }
+    }
+
+    function copyErpPayload() {
+      const txt = document.getElementById('erpCodePreview').innerText;
+      navigator.clipboard.writeText(txt);
+      const t = document.getElementById('erpToast');
+      t.style.display = 'block';
+      t.innerText = `✅ Payload de conciliación para ${currentErp} copiado al portapapeles.`;
+      setTimeout(() => { t.style.display = 'none'; }, 2800);
+    }
+
+    function exportErpFile(kind) {
+      if (kind === 'CSV') {
+        let csv = "TXID_ALBPAY;FECHA_LIQUIDACION;TIPO_DTE_SII;FOLIO_DTE;RUT_CLIENTE;NOMBRE_CLIENTE;CUENTA_DEBE_BANCO;MONTO_NETO_BANCO_CLP;CUENTA_DEBE_COMISION;MONTO_COMISION_022_CLP;CUENTA_HABER_CLIENTES;MONTO_BRUTO_FACTURA_CLP;ESTADO_CONCILIACION\n";
+        settlements.forEach(s => {
+          csv += `${s.txid};${s.settled_at};${s.dte_type};${s.dte_folio};${s.payer_rut};${s.payer_name};1.1.01.002;${s.net_clp};5.1.04.008;${s.fee_clp};1.1.04.001;${s.gross_clp};CONCILIADO_T0\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Asiento_Conciliacion_Automatica_${currentErp}_albpay.csv`;
+        a.click();
+      } else {
+        const xml = document.getElementById('erpCodePreview').innerText;
+        const blob = new Blob([xml], { type: 'application/xml;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Extracto_ISO20022_camt053_${settlements[0].txid}.xml`;
+        a.click();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderErpView();
+    });
+  </script>
+</body>
+</html>
