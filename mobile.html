@@ -222,6 +222,13 @@
       <span class="status-dot" id="connBadge">🟢 Conectado</span>
     </div>
 
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:space-between;">
+      <a href="index.html" style="flex:1;text-align:center;padding:7px 8px;border-radius:9px;background:var(--bg-card);border:1px solid var(--border);color:var(--cyan);font-size:0.75rem;font-weight:800;text-decoration:none;">⚡ Demo POS</a>
+      <a href="landing.html" style="flex:1;text-align:center;padding:7px 8px;border-radius:9px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-main);font-size:0.75rem;font-weight:800;text-decoration:none;">🌐 Web</a>
+      <a href="erp.html" style="flex:1;text-align:center;padding:7px 8px;border-radius:9px;background:var(--bg-card);border:1px solid var(--border);color:var(--emerald);font-size:0.75rem;font-weight:800;text-decoration:none;">🧮 ERP</a>
+      <a href="mail.html" style="flex:1;text-align:center;padding:7px 8px;border-radius:9px;background:var(--bg-card);border:1px solid var(--border);color:var(--gold);font-size:0.75rem;font-weight:800;text-decoration:none;">✉️ Mail</a>
+    </div>
+
     <!-- Tarjeta de Cuenta Bancaria Vinculada -->
     <div class="account-card">
       <div class="account-label">Cuenta Vinculada en DICT-CL</div>
@@ -290,7 +297,9 @@
     let mobState = {
       keys: [
         { key_value: "+56991234567", holder_rut: "15.432.876-9", holder_name: "Valentina Rojas Muñoz", bank_name: "Banco Santander Chile", is_merchant: 0, balance_clp: 4850000 },
+        { key_value: "18.933.991-7", holder_rut: "18.933.991-7", holder_name: "Pablo Andrés Leiva Mac-Namara", bank_name: "Banco de Chile", is_merchant: 0, balance_clp: 8500000 },
         { key_value: "+56987654321", holder_rut: "18.234.567-9", holder_name: "Matías Soto Contreras", bank_name: "Banco BCI", is_merchant: 0, balance_clp: 3100000 },
+        { key_value: "pablo@albpay.cl", holder_rut: "18.933.991-7", holder_name: "Pablo Andrés Leiva Mac-Namara (ALB SpA)", bank_name: "Banco BCI", is_merchant: 1, balance_clp: 24500000 },
         { key_value: "76.543.210-3", holder_rut: "76.543.210-3", holder_name: "Café Especialidad Lastarria SpA", bank_name: "Banco de Chile", is_merchant: 1, balance_clp: 14200000 },
         { key_value: "+56977001122", holder_rut: "77.123.450-K", holder_name: "Feria Libre Don Pedro EIRL", bank_name: "BancoEstado", is_merchant: 1, balance_clp: 3450000 },
         { key_value: "+56966600999", holder_rut: "21.999.888-0", holder_name: "Cuenta Reciente Sospechosa (Test Mula)", bank_name: "Tenpo Prepago", is_merchant: 0, balance_clp: 50000 }
@@ -428,9 +437,20 @@
         }
       } catch (_) {}
 
-      // Fallback autónomo si se abre sin backend
+      // Fallback autónomo Cloud con las 7 Capas Antifraude activas
       const payer = mobState.keys.find(k => k.key_value === payerKey);
       const payee = mobState.keys.find(k => k.key_value.toLowerCase() === payeeKey.toLowerCase());
+      if ((hour >= 22 || hour < 6) && amount > 200000) {
+        receipt.className = "receipt-box danger";
+        receipt.innerHTML = `🛑 <strong>OPERACIÓN RECHAZADA POR ESCUDO NOCTURNO ALB</strong><br/>Horario nocturno (22:00-06:00 hrs): Tope máximo permitido de $200.000 CLP (Ley Antifraude N° 21.673).`;
+        return;
+      }
+      if (duress || payeeKey === "+56966600999") {
+        if (payer) { payer.balance_clp -= amount; updatePayerCard(); }
+        receipt.className = "receipt-box warn";
+        receipt.innerHTML = `🟡 <strong>BLOQUEO CAUTELAR 72H (MED-CL)</strong><br/>Fondos retenidos preventivamente en cuenta puente por alerta de coacción / cuenta reciente sospechosa.`;
+        return;
+      }
       if (payer && payee) {
         payer.balance_clp -= amount;
         updatePayerCard();

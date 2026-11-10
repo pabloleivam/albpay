@@ -266,7 +266,7 @@
 
         <h3 style="font-size:15px;margin-bottom:8px;color:var(--gold);">3. Activo en tu Mac & iPhone</h3>
         <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
-          Servidor IMAP (<code>192.168.0.12:1143</code>) y SMTP (<code>192.168.0.12:1025</code>) activos con clave <code>albpay2026</code>. Escanea con la cámara de tu iPhone para instalar el perfil en 1 toque:
+          Servidor IMAP (<code>macbook-pro-de-pablo.local:1143</code>) y SMTP (<code>:1025</code>) activos 24/7 con clave <code>albpay2026</code> (compatible con cualquier Wi-Fi o Hotspot). Escanea con tu iPhone:
         </p>
         <div id="iphoneMailQrBox" style="background:#FFFFFF;padding:10px;border-radius:12px;width:150px;height:150px;margin:0 auto 10px;border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;"></div>
         <button class="btn btn-cyan" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="downloadAppleMailProfile()">
@@ -467,6 +467,8 @@
       '',
       'http://localhost:8090',
       'http://127.0.0.1:8090',
+      'http://macbook-pro-de-pablo.local:8090',
+      'http://172.20.10.10:8090',
       'http://192.168.0.12:8090'
     ];
 
@@ -605,7 +607,7 @@
       <key>EmailAccountDescription</key>
       <string>albpay.cl — Correo Corporativo (pablo@albpay.cl)</string>
       <key>EmailAccountName</key>
-      <string>Pablo Andrés Leiva Mac-namara</string>
+      <string>Pablo Andrés Leiva Mac-Namara</string>
       <key>EmailAccountType</key>
       <string>EmailTypeIMAP</string>
       <key>EmailAddress</key>
@@ -613,7 +615,7 @@
       <key>IncomingMailServerAuthentication</key>
       <string>EmailAuthPassword</string>
       <key>IncomingMailServerHostName</key>
-      <string>192.168.0.12</string>
+      <string>macbook-pro-de-pablo.local</string>
       <key>IncomingMailServerPortNumber</key>
       <integer>1143</integer>
       <key>IncomingMailServerUseSSL</key>
@@ -625,7 +627,7 @@
       <key>OutgoingMailServerAuthentication</key>
       <string>EmailAuthPassword</string>
       <key>OutgoingMailServerHostName</key>
-      <string>192.168.0.12</string>
+      <string>macbook-pro-de-pablo.local</string>
       <key>OutgoingMailServerPortNumber</key>
       <integer>1025</integer>
       <key>OutgoingMailServerUseSSL</key>
